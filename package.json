@@ -1,0 +1,49 @@
+{
+  "name": "giraffeduck",
+  "version": "3.0.0",
+  "description": "One of the websites of all time",
+  "scripts": {
+    "build": "npm run build:ts && npm run build:11",
+    "build:ts": "tsc --build",
+    "build:11": "npx @11ty/eleventy",
+    "lint": "eslint src/ && prettier --check src/ && tsc --noEmit",
+    "lint:fix": "eslint src/ --fix && prettier --write src/ && prisma format && tsc --noEmit",
+    "start:dev": "npm run build:ts && npx @11ty/eleventy --serve --quiet",
+    "start:debug": "npm run build:ts && DEBUG=Eleventy* npx @11ty/eleventy",
+    "benchmark": "npm run build:ts && DEBUG=Eleventy:Benchmark* npx @11ty/eleventy"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/atorasuunva/giraffeduck.git"
+  },
+  "author": {
+    "name": "Atora Suunva",
+    "email": "atora@giraffeduck.com",
+    "url": "https://giraffeduck.com/"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=14"
+  },
+  "bugs": {
+    "url": "https://github.com/atorasuunva/giraffeduck/issues"
+  },
+  "homepage": "https://giraffeduck.com",
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "@11ty/eleventy-img": "^3.1.6",
+    "@11ty/eleventy-navigation": "^0.3.5",
+    "@11ty/eleventy-plugin-bundle": "^1.0.4",
+    "@11ty/eleventy-plugin-rss": "^1.2.0",
+    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0",
+    "eslint-config-prettier": "^9.0.0",
+    "luxon": "^3.4.3",
+    "markdown-it-anchor": "^8.6.7",
+    "prettier": "^3.0.3",
+    "prismjs": "^1.29.0",
+    "typescript": "^5.2.2"
+  }
+}

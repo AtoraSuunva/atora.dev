@@ -1,0 +1,135 @@
+:root {
+  --primary-color: #88927B;
+  --secondary-color: #A0C7FB;
+  --tertiary-color: #69385c;
+
+  --main-background: #3f4438;
+  --main-font: #fff;
+
+  --nav-background: #00000099;
+  --nav-background-selected: #3f4438;
+  --nav-font: #fff;
+
+  --primary-font: 'Roboto', sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--primary-font);
+  background-color: var(--main-background);
+  color: var(--main-font);
+}
+
+a {
+  color: var(--secondary-color);
+}
+
+main {
+  margin: 0 auto;
+  padding: 1em;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  background-color: var(--nav-background);
+  padding: 0 1em;
+}
+
+nav ul {
+  display: flex;
+  margin: 0;
+  padding: 0 0 0 1em;
+}
+
+nav ul li {
+  list-style: none;
+  display: flex;
+  margin: 0 0.5em 0 0;
+}
+
+nav ul li.selected,
+nav ul li:hover {
+  background-color: var(--nav-background-selected);
+}
+
+nav ul li a {
+  color: var(--nav-font);
+  padding: 1em;
+  text-decoration: none;
+}
+
+footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--nav-font);
+  background-color: var(--nav-background);
+  padding: 0.75em 0;
+}
+
+footer p {
+  margin: 0.5em 0 0 0;
+}
+
+.dark-stripes {
+  background-image: repeating-linear-gradient(45deg, #0000, #0000 30px, #00000025 30px, #00000025 60px)
+}
+
+.center-piece {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin: 1em 0;
+  background-color: #0006;
+  padding: 1em;
+  border-radius: 0.5em;
+  justify-content: space-evenly;
+}
+
+#nav-toggle {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  nav {
+    padding: 0.5em;
+    flex-direction: column;
+    align-items: baseline;
+  }
+
+  #nav-toggle {
+    display: block;
+    cursor: pointer;
+    height: 32px;
+    width: 32px;
+  }
+
+  nav .nav-header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  nav ul {
+    flex-direction: column;
+    position: absolute;
+    left: -300px;
+  }
+
+  nav.show ul {
+    position: initial;
+    width: 100%;
+  }
+
+  nav ul li {
+    margin: 0.5em 0;
+  }
+
+  .center-piece {
+    flex-direction: column-reverse;
+  }
+}

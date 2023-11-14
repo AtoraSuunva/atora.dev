@@ -1,0 +1,34 @@
+---
+title: Untitled Page
+description: Undescribed Page
+---
+
+<!DOCTYPE html>
+<html lang="en">
+      <head>
+            <meta charset="utf-8">
+            <meta http-equiv="x-ua-compatible" content="ie=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="keywords" content="{{ tags }}" />
+            <!-- Embed meta -->
+            <meta name="description" content="{{ description }}">
+            <meta property="og:url" content="https://atora.dev/">
+            <meta property="og:type" content="website">
+            <meta property="og:site_name" content="atora.dev">
+            <meta property="og:title" content="{{ title }}">
+            <meta property="og:description" content="{{ description }}">
+            <meta property="og:image" content="/meta.png">
+            <meta property="og:locale" content="en_US">
+            <meta name="twitter:card" content="{{ description }}">
+            <meta name="twitter:site" content="atora.dev">
+            <meta name="twitter:creator" content="@AtoraSuunva">
+            <meta name="twitter:url" content="https://atora.dev">
+            <meta name="twitter:title" content="{{ title }}">
+            <meta name="twitter:description" content="{{ description }}">
+            <meta name="twitter:image" content="/meta.png">
+            <meta name="theme-color" content="#af5626">
+            <link rel="stylesheet" href="/resources/styles/styles.css">
+            <title>{{ title }} | atora.dev</title>
+      </head>
+      <body>{{ content | safe }}</body>
+</html>
