@@ -5,13 +5,13 @@
     /* Projects */
     "composite": true,
     "rootDir": "./src",
-    "outDir": "./src/_js",
+    "outDir": "./src",
     "tsBuildInfoFile": ".tsbuildinfo",
 
     /* Language and Environment */
     "target": "ES2022",
     "lib": ["ES2022"],
-    "types": [],
+    "types": ["node"],
 
     /* Modules */
     "module": "Node16",

@@ -1,7 +1,12 @@
 # compiled output
-/src/_js
-/node_modules
+/src/**/*.js
+/src/**/*.d.ts
+/src/**/*.d.ts.map
+/src/**/*.js.map
 /_site
+.tsbuildinfo
+
+/node_modules
 
 # Logs
 logs
