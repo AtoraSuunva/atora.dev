@@ -10,7 +10,7 @@ description: Undescribed Page
             <meta http-equiv="x-ua-compatible" content="ie=edge">
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta name="keywords" content="{{ tags }}" />
-            <!-- Embed meta -->
+            {# Embed meta #}
             <meta name="description" content="{{ description }}">
             <meta property="og:url" content="https://atora.dev/">
             <meta property="og:type" content="website">
@@ -27,6 +27,23 @@ description: Undescribed Page
             <meta name="twitter:description" content="{{ description }}">
             <meta name="twitter:image" content="/meta.png">
             <meta name="theme-color" content="#af5626">
+            {# Favicons #}
+            <link rel="apple-touch-icon"
+                  sizes="180x180"
+                  href="/resources/favicon/apple-touch-icon.png">
+            <link rel="icon"
+                  type="image/png"
+                  sizes="32x32"
+                  href="/resources/favicon/favicon-32x32.png">
+            <link rel="icon"
+                  type="image/png"
+                  sizes="16x16"
+                  href="/resources/favicon/favicon-16x16.png">
+            <link rel="manifest" href="/resources/favicon/site.webmanifest">
+            {# Stylesheets #}
+            <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
+                  rel="stylesheet">
+            <link rel="preload" href="/resources/styles/styles.css" as="style" />
             <link rel="stylesheet" href="/resources/styles/styles.css">
             <title>{{ title }} | atora.dev</title>
       </head>

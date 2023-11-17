@@ -74,6 +74,28 @@ footer p {
   margin: 0.5em 0 0 0;
 }
 
+.hamburger-icon {
+  border: 1px solid #fff;
+  width: 14px;
+  height: 0
+}
+
+.hamburger-icon::before {
+  border: 1px solid #fff;
+  transform: translate(-1px, -6px);
+  width: 14px;
+  display: block;
+  content: ''
+}
+
+.hamburger-icon::after {
+  border: 1px solid #fff;
+  transform: translate(-1px, 3px);
+  width: 14px;
+  display: block;
+  content: ''
+}
+
 .dark-stripes {
   background-image: repeating-linear-gradient(45deg, #0000, #0000 30px, #00000025 30px, #00000025 60px)
 }
@@ -89,7 +111,8 @@ footer p {
   justify-content: space-evenly;
 }
 
-#nav-toggle {
+#nav-toggle,
+label[for="nav-toggle"] {
   display: none;
 }
 
@@ -100,11 +123,17 @@ footer p {
     align-items: baseline;
   }
 
-  #nav-toggle {
-    display: block;
-    cursor: pointer;
-    height: 32px;
+  label[for="nav-toggle"] {
+    position: absolute;
+    right: 0px;
+    top: 0px;
     width: 32px;
+    height: 32px;
+    /* background-color: var(--tertiary-color); */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 8px;
   }
 
   nav .nav-header {
@@ -115,12 +144,13 @@ footer p {
   }
 
   nav ul {
+    padding: 0;
     flex-direction: column;
     position: absolute;
     left: -300px;
   }
 
-  nav.show ul {
+  nav #nav-toggle:checked~ul {
     position: initial;
     width: 100%;
   }

@@ -1,9 +1,16 @@
-<nav class="show">
-  <div class="nav-header">
-    <img src="/resources/images/feather.png" height="32" width="32" alt="">
-    <button id="nav-toggle">≡</button>
-  </div>
-  <ul>
+<nav>
+  {# <div class="nav-header"> #}
+  <img aria-hidden="true"
+       src="/resources/images/feather.png"
+       height="32"
+       width="32"
+       alt="">
+  <input type="checkbox" id="nav-toggle" name="nav-toggle">
+  <label for="nav-toggle">
+    <div class="hamburger-icon"></div>
+  </label>
+  {# </div> #}
+  <ul role="navigation" aria-label="Site Sections" class="show">
     <li class="selected">
       <a href="/">Home</a>
     </li>
