@@ -1,5 +1,4 @@
 ---
-layout: templates/page.njk
 title: Bots
 subtitle: beep boop
 description: Some of my bots

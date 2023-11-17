@@ -1,0 +1,4 @@
+Sitemap: https://atora.dev/sitemap.xml
+
+User-agent: *
+Disallow:

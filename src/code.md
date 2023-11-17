@@ -1,5 +1,4 @@
 ---
-layout: templates/page.njk
 title: Code
 subtitle: 1000101
 description: Some of my projects

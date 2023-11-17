@@ -3,14 +3,17 @@
   "version": "1.0.0",
   "description": "One of the websites of all time",
   "scripts": {
-    "build": "npm run build:ts && npm run build:11",
+    "build": "npm-run-all build:*",
+    "build:clean": "rimraf _site/ && rimraf src/**/*.js && rimraf src/**/*.d.ts && rimraf src/**/*.js.map && rimraf src/**/*.d.ts.map && rimraf .tsbuildinfo",
     "build:ts": "tsc --build",
     "build:11": "npx @11ty/eleventy",
+    "watch:ts": "tsc --build --watch",
+    "watch:11": "npx @11ty/eleventy --serve",
     "lint": "eslint src/ && prettier --check src/ && tsc --noEmit",
-    "lint:fix": "eslint src/ --fix && prettier --write src/ && prisma format && tsc --noEmit",
-    "start:dev": "npm run build:ts && npx @11ty/eleventy --serve --quiet",
-    "start:debug": "npm run build:ts && DEBUG=Eleventy* npx @11ty/eleventy",
-    "benchmark": "npm run build:ts && DEBUG=Eleventy:Benchmark* npx @11ty/eleventy"
+    "lint:fix": "eslint src/ --fix && prettier --write src/ && tsc --noEmit",
+    "start:dev": "NODE_ENV=development npm-run-all --parallel watch:*",
+    "start:debug": "DEBUG=Eleventy* npm run start:dev",
+    "benchmark": "DEBUG=Eleventy:Benchmark* npm run build"
   },
   "repository": {
     "type": "git",
@@ -18,7 +21,7 @@
   },
   "author": {
     "name": "Atora Suunva",
-    "email": "atora@atora.dev",
+    "email": "at@atora.dev",
     "url": "https://atora.dev/"
   },
   "license": "MIT",
@@ -43,8 +46,10 @@
     "eslint-config-prettier": "^9.0.0",
     "luxon": "^3.4.4",
     "markdown-it-anchor": "^8.6.7",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.1.0",
     "prismjs": "^1.29.0",
+    "rimraf": "^5.0.5",
     "typescript": "^5.2.2"
   }
 }
