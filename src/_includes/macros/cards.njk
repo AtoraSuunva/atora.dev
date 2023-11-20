@@ -1,7 +1,7 @@
 {% macro card(title, description, date, link, linkText, image, icon) -%}
   <article class="card">
-    {% if icon and icon.includes('.') -%}
-      {% picturesync icon, "", "card-icon", [100] %}
+    {%- if icon and icon.includes('.') -%}
+      {%- picturesync icon, "", "card-icon", [100] -%}
       {# <img class="card-icon" src="{{ icon }}" alt=""> #}
     {%- elseif icon -%}
       <div class="card-icon">
@@ -14,9 +14,9 @@
           <h3>{{ title }}{%- if date -%}<small>{{date}}<small>{%- endif -%}</h3>
           <p>{{ description }}</p>
         </div>
-        {% if image %}
-          {% picturesync image, "", "card-image", [320] %}
-        {% endif %}
+        {%- if image -%}
+          {%- picturesync image, "", "card-image", [320] -%}
+        {%- endif -%}
       </div>
       {%- if link -%}
         <a class="link-button" href="{{ link }}">{{ linkText or link }}</a>

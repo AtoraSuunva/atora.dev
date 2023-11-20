@@ -17,6 +17,7 @@ module.exports = function (eleventyConfig) {
   })
 
   eleventyConfig.addWatchTarget('public/**/*.{svg,webp,png,jpeg}')
+  eleventyConfig.setServerPassthroughCopyBehavior('passthrough')
 
   // App plugins
   eleventyConfig.addPlugin(pluginDrafts)

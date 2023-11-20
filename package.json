@@ -8,7 +8,7 @@
     "build:ts": "tsc --build",
     "build:11": "npx @11ty/eleventy",
     "watch:ts": "tsc --build --watch",
-    "watch:11": "npx @11ty/eleventy --serve",
+    "watch:11": "npx @11ty/eleventy --serve --incremental",
     "lint": "eslint src/ && prettier --check src/ && tsc --noEmit",
     "lint:fix": "eslint src/ --fix && prettier --write src/ && tsc --noEmit",
     "start:dev": "NODE_ENV=development npm-run-all --parallel watch:*",

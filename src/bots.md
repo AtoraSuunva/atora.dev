@@ -4,7 +4,7 @@ subtitle: beep boop
 description: Some of my bots
 ---
 
-Some of the bots I've made for Discord, usually for utility or moderation. There's even more I've written for personal things (28k scam sites logged 😔)
+Some of the bots I've made for Discord, usually for utility or moderation. There's even more I've written for personal things (29k scam sites logged 😔)
 
 {% import "macros/cards.njk" as cards %}
 

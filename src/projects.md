@@ -1,7 +1,7 @@
 ---
 title: Projects
 subtitle: Software!
-description: A preview of select projects that Atora has worked on
+description: A preview of select projects that I have worked on
 ---
 
 This list is non-exhaustive, and likely always will be. Many of my personal projects are interesting only really to me and people who are super invested into things like serverless functions and automation. Most of my public code is on [GitHub](https://github.com/AtoraSuunva), but here's some highlights:
