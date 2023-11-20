@@ -1,8 +1,8 @@
 ---
 layout: templates/base.njk
 permalink: index.html
-title: Index
-description: AtoraSuunva's site
+title: Atora Suunva
+description: Software developer, programmer, coder, rockstar dev, code ninja or whatever else you call someone who writes code for a living.
 ---
 
 {% include "templates/nav.njk" %}
@@ -23,43 +23,49 @@ description: AtoraSuunva's site
         Scroll down to see some of my <a href="/posts">posts</a> and <a href="/projects">projects</a>, or read more <a href="/about">about me</a> or how to <a href="/contact">contact me</a>.
       </p>
     </div>
-    <div>{% image "../public/resources/images/feather.png", "Atora Suunva", [128] %}</div>
+    <div>{% picture "feather.png", "Atora Suunva", "", [128] %}</div>
   </section>
   <section>
+    {% import "macros/cards.njk" as cards %}
     <h2>Recent Posts</h2>
     <article class="post-preview">
-      <h3>
-        <a href="/blog/test-post-please-ignore">Test Post Please Ignore</a> <small>2023-01-01</small>
-      </h3>
-      <p>This is an example post please ignore it.</p>
-    </article>
-    <article class="post-preview">
-      <h3>
-        <a href="/blog/how-bad-is-inefficiency">How *bad* is inefficiency?</a> <small>2023-02-02</small>
-      </h3>
-      <p>How far can you push an O(2^n) algorithm?</p>
-    </article>
-    <article class="post-preview">
-      <h3>
-        <a href="/blog/api-follies">API follies</a> <small>2023-02-02</small>
-      </h3>
-      <p>Help.</p>
-    </article>
+      {{ cards.card(
+          title="Test post please ignore",
+          description="This is an example post please ignore it.",
+          link="/blog/test-post-please-ignore",
+          linkText="Continue Reading",
+          image="flower-closed.png") }}
+      {{ cards.card(
+          title="Second test post",
+          description="Another test post until I finish it.",
+          link="/blog/test-post-please-ignore",
+          linkText="Continue Reading") }}
+      {{ cards.card(
+          title="Third test post",
+          description="More example text showing the post description preview.",
+          link="/blog/test-post-please-ignore",
+          linkText="Continue Reading") }}
   </section>
   <section>
     <h2>Recent Projects</h2>
-    <article class="project-preview">
-      <h3>This site!</h3>
-      <p>
-        A static site built with <a href="https://www.11ty.dev">Eleventy</a>, hosted on <a href="https://pages.cloudflare.com/">Cloudflare Pages</a>
-      </p>
-    </article>
-    <article class="project-preview">
-      <h3>SmolBot</h3>
-      <p>
-        A moderation and utility bot for Discord, containing various tools I've needed over the years. <a href="https://github.com/AtoraSuunva/smolbot">View on GitHub</a>
-      </p>
-    </article>
+    {{ cards.card(
+      title="This site!",
+      description="I wrote all of this from scratch myself",
+      link="/",
+      linkText="You're already on it!",
+      icon="feather.png") }}
+    {{ cards.card(
+      title="Booru",
+      description="booru is a Node.js package to easily interface with the APIs of several boorus",
+      link="https://github.com/AtoraSuunva/booru",
+      linkText="View on GitHub",
+      icon="boo") }}
+    {{ cards.card(
+      title="Bots",
+      description="Mostly utility and moderation tools for Discord, with some 'fun' commands thrown in too.",
+      link="/bots",
+      linkText="View bots",
+      icon="b!") }}
   </section>
 </main>
 {% include "templates/footer.njk" %}

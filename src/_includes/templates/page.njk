@@ -2,14 +2,14 @@
 layout: templates/base.njk
 ---
 
-{% include "templates/nav.njk" %}
-<header>
+{%- include "templates/nav.njk" -%}
+<main>
+  <header>
   <h1 class="title">
-    {{ title }} <small>{{ subtitle }}</small>
+    {{ title }} <small class="muted">{{ subtitle }}</small>
   </h1>
   <h4 class="subtitle">{{ description }}</h4>
 </header>
-<main>
-  {{ content | safe }}
+  {{- content | safe -}}
 </main>
-{% include "templates/footer.njk" %}
+{%- include "templates/footer.njk" -%}

@@ -1,8 +1,26 @@
-{% macro card(title, description, link, buttontext, image) %}
+{% macro card(title, description, date, link, linkText, image, icon) -%}
   <article class="card">
-    <img class="circle-icon" src="{{ image }}" width="60" />
-    <h1>{{ title }}</h1>
-    <p>{{ description }}</p>
-    <a href="{{ link }}" class="button">{{ buttontext }}</a>
+    {% if icon and icon.includes('.') -%}
+      {% picturesync icon, "", "card-icon", [100] %}
+      {# <img class="card-icon" src="{{ icon }}" alt=""> #}
+    {%- elseif icon -%}
+      <div class="card-icon">
+        {{- icon -}}
+      </div>
+    {%- endif %}
+    <div class="card-content">
+      <div class="card-main">
+        <div class="card-text">
+          <h3>{{ title }}{%- if date -%}<small>{{date}}<small>{%- endif -%}</h3>
+          <p>{{ description }}</p>
+        </div>
+        {% if image %}
+          {% picturesync image, "", "card-image", [320] %}
+        {% endif %}
+      </div>
+      {%- if link -%}
+        <a class="link-button" href="{{ link }}">{{ linkText or link }}</a>
+      {%- endif -%}
+    </div>
   </article>
-{% endmacro %}
+{%- endmacro %}

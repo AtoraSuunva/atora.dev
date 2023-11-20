@@ -1,3 +1,9 @@
+{% macro active(name, strict = false) -%}
+  {% if (not strict and page.url.startsWith(name)) or page.url == name -%}
+    class="active"
+  {%- endif %}
+{%- endmacro %}
+
 <nav>
   <img aria-hidden="true"
        src="/resources/images/feather.png"
@@ -9,22 +15,22 @@
     <div class="hamburger-icon"></div>
   </label>
   <ul role="navigation" aria-label="Site Sections" class="show">
-    <li class="selected">
+    <li {{ active('/', true) }}>
       <a href="/">Home</a>
     </li>
-    <li>
+    <li {{ active('/projects') }}>
       <a href="/projects">Projects</a>
     </li>
-    <li>
+    <li {{ active('/blog') }}>
       <a href="/blog">Blog</a>
     </li>
-    <li>
+    <li {{ active('/bots') }}>
       <a href="/bots">Bots</a>
     </li>
-    <li>
+    <li {{ active('/about') }}>
       <a href="/about">About</a>
     </li>
-    <li>
+    <li {{ active('/contact') }}>
       <a href="/contact">Contact</a>
     </li>
   </ul>

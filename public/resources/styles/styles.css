@@ -2,14 +2,17 @@
   --primary-color: #88927B;
   --secondary-color: #A0C7FB;
   --tertiary-color: #69385c;
+  --active-tertiary-color: #4a2a3c;
 
   --main-background: #3f4438;
   --main-font: #fff;
   --muted-font: #ccc;
 
   --nav-background: #191b16;
-  --nav-background-selected: #3f4438;
+  --nav-background-active: #3f4438;
   --nav-font: #fff;
+
+  --background-darken: #0006;
 
   --primary-font: 'Roboto', sans-serif;
 }
@@ -23,17 +26,18 @@ body {
   color: var(--main-font);
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 a {
   color: var(--secondary-color);
 }
 
 .muted {
   color: var(--muted-font);
-}
-
-main {
-  margin: 0 auto;
-  padding: 1em;
 }
 
 nav {
@@ -55,15 +59,42 @@ nav ul li {
   margin: 0 0.5em 0 0;
 }
 
-nav ul li.selected,
+nav ul li.active,
 nav ul li:hover {
-  background-color: var(--nav-background-selected);
+  background-color: var(--nav-background-active);
 }
 
 nav ul li a {
   color: var(--nav-font);
   padding: 1em;
   text-decoration: none;
+}
+
+main {
+  flex-grow: 1;
+  margin: 0 auto;
+  padding: 2em;
+  max-width: 1100px;
+}
+
+header {
+  padding: 0.25em 1em;
+  margin-bottom: 2em;
+  color: var(--nav-font);
+  background-color: var(--background-darken);
+  border-radius: 0.5em;
+}
+
+*:hover>.header-anchor {
+  opacity: 1;
+  text-decoration: underline;
+  transition: all 0.3s ease-in-out;
+}
+
+.header-anchor {
+  text-decoration: none;
+  color: var(--secondary-color);
+  opacity: 0.5;
 }
 
 footer {
@@ -112,11 +143,92 @@ footer p {
   display: flex;
   flex-direction: row;
   align-items: center;
-  margin: 1em 0;
-  background-color: #0006;
-  padding: 1em;
+  margin: 0 auto;
+  padding: 2em;
   border-radius: 0.5em;
   justify-content: space-evenly;
+  max-width: 1100px;
+  background-color: var(--background-darken);
+}
+
+.center-piece>div:first-child {
+  margin-right: 2em;
+}
+
+.card {
+  display: flex;
+  padding: 1.75em 1.25em;
+  margin: 1.5em 0em;
+  border-radius: 0.5em;
+  background-color: var(--nav-background);
+  box-shadow: 0 0 4px #00000066;
+}
+
+.card .card-content {
+  width: 100%;
+}
+
+.card .card-main {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 1.5em;
+}
+
+.card .card-text {
+  margin-right: 1em;
+}
+
+.card .card-icon {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-right: 0.5em;
+  overflow: clip;
+  object-fit: contain;
+  background-color: var(--background-darken);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2vw;
+}
+
+.card .card-image {
+  width: 320px;
+  max-height: 320px;
+  border-radius: 0.5em;
+  overflow: clip;
+  object-fit: contain;
+  background-color: var(--background-darken);
+}
+
+.card .card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.link-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  padding: 0.5em 1em;
+  border-radius: 0.5em;
+  background-color: var(--tertiary-color);
+  color: var(--main-font);
+  text-decoration: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.link-button:hover,
+.link-button:focus {
+  background-color: var(--active-tertiary-color);
 }
 
 #nav-toggle,
@@ -152,7 +264,7 @@ label[for="nav-toggle"] {
   }
 
   nav ul {
-    padding: 0;
+    padding: 1em 0;
     flex-direction: column;
     position: absolute;
     width: 100%;
@@ -169,12 +281,11 @@ label[for="nav-toggle"] {
   }
 
   nav ul li {
-    margin: 0.5em 0;
+    margin: 0.5em 1.25em;
     background-color: var(--tertiary-color);
   }
 
   nav ul li a {
-    padding: 0.75em;
     width: 100%;
     display: block;
     text-align: center;
@@ -194,7 +305,31 @@ label[for="nav-toggle"] {
     width: 18px;
   }
 
+  main {
+    padding: 0.75em;
+  }
+
   .center-piece {
     flex-direction: column-reverse;
+  }
+
+  .center-piece>div:first-child {
+    margin-right: 0;
+  }
+
+  .card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card .card-main {
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .card .card-image {
+    margin-top: 0.5em;
+    margin-bottom: 1.5em;
+    align-self: center;
   }
 }

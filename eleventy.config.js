@@ -7,7 +7,7 @@ const pluginNavigation = require('@11ty/eleventy-navigation')
 const { EleventyHtmlBasePlugin } = require('@11ty/eleventy')
 
 const pluginDrafts = require('./eleventy.config.drafts.js')
-const pluginImages = require('./eleventy.config.images.js')
+const pluginPicture = require('./eleventy.config.picture.js')
 const pluginFilters = require('./eleventy.config.filters.js')
 
 module.exports = function (eleventyConfig) {
@@ -20,9 +20,7 @@ module.exports = function (eleventyConfig) {
 
   // App plugins
   eleventyConfig.addPlugin(pluginDrafts)
-  eleventyConfig.addPlugin(pluginImages)
-
-  // Custom filters
+  eleventyConfig.addPlugin(pluginPicture)
   eleventyConfig.addPlugin(pluginFilters)
 
   // Official plugins
