@@ -1,23 +1,20 @@
 {% extends "templates/base.njk" %}
-
 {%- block content -%}
-{%- include "templates/nav.njk" -%}
-<div class="content-wrapper">
-  <header>
-    {%- block header -%}
-      <div class="header-wrapper">
-        <h1 class="title">
-          {{ title }} <small>{{ subtitle }}</small>
-        </h1>
-        <p class="description">{{ description }}</p>
-      </div>
-    {%- endblock -%}
-  </header>
-  <main>
-    {%- block main -%}
-      {{ content | safe }}
-    {%- endblock %}
-  </main>
-</div>
-{%- include "templates/footer.njk" -%}
-{%- endblock -%}
+  {%- include "templates/nav.njk" -%}
+  <div class="content-wrapper">
+    <header>
+      {%- block header -%}
+        <div class="header-wrapper">
+          <h1 class="title">
+            {{ title }} <small>{{ subtitle }}</small>
+          </h1>
+          <p class="description">{{ description }}</p>
+        </div>
+      {%- endblock -%}
+    </header>
+    <main>
+      {%- block main -%}{{ content | safe }}{%- endblock %}
+      </main>
+    </div>
+    {%- include "templates/footer.njk" -%}
+  {%- endblock -%}

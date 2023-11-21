@@ -4,14 +4,14 @@
       {%- picturesync icon, "", "card-icon", [100] -%}
       {# <img class="card-icon" src="{{ icon }}" alt=""> #}
     {%- elseif icon -%}
-      <div class="card-icon">
-        {{- icon -}}
-      </div>
+      <div class="card-icon">{{- icon -}}</div>
     {%- endif %}
     <div class="card-content">
       <div class="card-main">
         <div class="card-text">
-          <h3>{{ title }}{%- if date -%}<small>{{date}}<small>{%- endif -%}</h3>
+          <h3>
+            {{ title }}{%- if date -%}<small>{{ date }}</small>{%- endif -%}
+          </h3>
           <p>{{ description }}</p>
         </div>
         {%- if image -%}

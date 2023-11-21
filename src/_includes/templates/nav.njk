@@ -1,33 +1,30 @@
 {% macro active(name, strict = false) -%}
-  {% if (not strict and page.url.startsWith(name)) or page.url == name -%}
-    class="active"
-  {%- endif %}
-{%- endmacro %}
-
-<nav>
-  {% picture "feather.png", "", "", [32] %}
-  <input type="checkbox" id="nav-toggle" name="nav-toggle" aria-hidden="true">
-  <label for="nav-toggle" aria-hidden="true">
-    <div class="hamburger-icon"></div>
-  </label>
-  <ul role="navigation" aria-label="Site Sections" class="show">
-    <li {{ active('/', true) }}>
-      <a href="/">Home</a>
-    </li>
-    <li {{ active('/projects') }}>
-      <a href="/projects">Projects</a>
-    </li>
-    <li {{ active('/blog') }}>
-      <a href="/blog">Blog</a>
-    </li>
-    <li {{ active('/bots') }}>
-      <a href="/bots">Bots</a>
-    </li>
-    <li {{ active('/about') }}>
-      <a href="/about">About</a>
-    </li>
-    <li {{ active('/contact') }}>
-      <a href="/contact">Contact</a>
-    </li>
-  </ul>
-</nav>
+  {% if (not strict and page.url.startsWith(name)) or page.url == name -%}class="active" aria-current="page"{%- endif %}
+  {%- endmacro %}
+  <nav>
+    {% picture "feather.png", "", "", [32] %}
+    <input type="checkbox" id="nav-toggle" name="nav-toggle" aria-hidden="true">
+    <label for="nav-toggle" aria-hidden="true">
+      <div class="hamburger-icon"></div>
+    </label>
+    <ul aria-label="Site Sections">
+      <li {{ active('/', true) }}>
+        <a href="/">Home</a>
+      </li>
+      <li {{ active("/projects") }}>
+        <a href="/projects">Projects</a>
+      </li>
+      <li {{ active("/blog") }}>
+        <a href="/blog">Blog</a>
+      </li>
+      <li {{ active("/bots") }}>
+        <a href="/bots">Bots</a>
+      </li>
+      <li {{ active("/about") }}>
+        <a href="/about">About</a>
+      </li>
+      <li {{ active("/contact") }}>
+        <a href="/contact">Contact</a>
+      </li>
+    </ul>
+  </nav>

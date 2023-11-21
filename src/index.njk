@@ -6,72 +6,63 @@ description: Software developer, programmer, coder, rockstar dev, code ninja or 
 ---
 
 {% extends "templates/page.njk" %}
-
 {% block header %}
-<div class="center-piece">
-  <div>
-    <h1>
-      Atora Suunva <small>(they/he)</small>
-    </h1>
-    <h2>Who am I?</h2>
-    <p>Heya, I'm Atora Suunva, software developer and person on the internet.</p>
-    <p>I've been writing code for 10+ years, which was first my hobby, then education, then job.</p>
-    <p>
-      While I do love programming, I also do things like play games or go outside or go for long walks on the beach unironically.
-    </p>
-    <p>This site is a showcase of things I've done along with a place for me to post things.</p>
-    <p>
-      Scroll down to see some of my <a href="/posts">posts</a> and <a href="/projects">projects</a>, or read more <a href="/about">about me</a> or how to <a href="/contact">contact me</a>.
-    </p>
-    <p>
-      <a href="https://twitter.com/siggymcc/status/1566071435461738496">Avatar Source (Twitter/siggymc)</a>
-    <p>
+  <div class="center-piece">
+    <div>
+      <h1>
+        Atora Suunva <small>(they/he)</small>
+      </h1>
+      <h2>Who am I?</h2>
+      <p>Heya, I'm Atora Suunva, software developer and person on the internet.</p>
+      <p>I've been writing code for 10+ years, which was first my hobby, then education, then job.</p>
+      <p>
+        While I do love programming, I also do things like play games or go outside or go for long walks on the beach unironically.
+      </p>
+      <p>This site is a showcase of things I've done along with a place for me to post things.</p>
+      <p>
+        Scroll down to see some of my <a href="/posts">posts</a> and <a href="/projects">projects</a>, or read more <a href="/about">about me</a> or how to <a href="/contact">contact me</a>.
+      </p>
+      <p>
+        <a href="https://twitter.com/siggymcc/status/1566071435461738496">Avatar Source (Twitter/siggymc)</a>
+      </p>
+    </div>
+    <div class="me-irl">{% picture "siggy-bleppy.png", "Atora Suunva", "", [128] %}</div>
   </div>
-  <div class="me-irl">{% picture "siggy-bleppy.png", "Atora Suunva", "", [128] %}</div>
-</div>
-{% endblock %}
-
+{% endblock header %}
 {% block main %}
-<section>
-  {% import "macros/cards.njk" as cards %}
-  <h2>Recent Posts</h2>
-  <article class="post-preview">
-    {{ cards.card(
-        title="Test post please ignore",
+  <section>
+    {% import "macros/cards.njk" as cards %}
+    <h2>Recent Posts</h2>
+    {{ cards.card(title="Test post please ignore",
         description="This is an example post please ignore it.",
         link="/blog/test-post-please-ignore",
         linkText="Continue Reading",
         image="flower-closed.png") }}
-    {{ cards.card(
-        title="Second test post",
+    {{ cards.card(title="Second test post",
         description="Another test post until I finish it.",
         link="/blog/test-post-please-ignore",
         linkText="Continue Reading") }}
-    {{ cards.card(
-        title="Third test post",
+    {{ cards.card(title="Third test post",
         description="More example text showing the post description preview.",
         link="/blog/test-post-please-ignore",
         linkText="Continue Reading") }}
-</section>
-<section>
-  <h2>Recent Projects</h2>
-  {{ cards.card(
-    title="This site!",
-    description="I wrote all of this from scratch myself",
-    link="/",
-    linkText="You're already on it!",
-    icon="feather.png") }}
-  {{ cards.card(
-    title="Booru",
-    description="booru is a Node.js package to easily interface with the APIs of several boorus",
-    link="https://github.com/AtoraSuunva/booru",
-    linkText="View on GitHub",
-    icon="boo") }}
-  {{ cards.card(
-    title="Bots",
-    description="Mostly utility and moderation tools for Discord, with some 'fun' commands thrown in too.",
-    link="/bots",
-    linkText="View bots",
-    icon="b!") }}
-</section>
-{% endblock %}
+  </section>
+  <section>
+    <h2>Recent Projects</h2>
+    {{ cards.card(title="This site!",
+        description="I wrote all of this from scratch myself",
+        link="/",
+        linkText="You're already on it!",
+        icon="feather.png") }}
+    {{ cards.card(title="Booru",
+        description="booru is a Node.js package to easily interface with the APIs of several boorus",
+        link="https://github.com/AtoraSuunva/booru",
+        linkText="View on GitHub",
+        icon="boo") }}
+    {{ cards.card(title="Bots",
+        description="Mostly utility and moderation tools for Discord, with some 'fun' commands thrown in too.",
+        link="/bots",
+        linkText="View bots",
+        icon="b!") }}
+  </section>
+{% endblock main %}
