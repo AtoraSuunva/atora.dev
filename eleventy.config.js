@@ -1,4 +1,5 @@
 const markdownItAnchor = require('markdown-it-anchor')
+const markdownItTOC = require('markdown-it-toc-done-right')
 
 const pluginRss = require('@11ty/eleventy-plugin-rss')
 const pluginSyntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight')
@@ -13,7 +14,8 @@ const pluginFilters = require('./eleventy.config.filters.js')
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({
     './public/': '/',
-    './node_modules/prismjs/themes/prism-okaidia.css': '/css/prism-okaidia.css',
+    './node_modules/prismjs/themes/prism-okaidia.css':
+      '/resources/styles/prism.css',
   })
 
   eleventyConfig.addWatchTarget('public/**/*.{svg,webp,png,jpeg}')
@@ -42,7 +44,11 @@ module.exports = function (eleventyConfig) {
         symbol: '#',
         ariaHidden: false,
       }),
-      level: [1, 2, 3, 4],
+      level: [2, 3, 4],
+      slugify: eleventyConfig.getFilter('slugify'),
+    })
+
+    mdLib.use(markdownItTOC, {
       slugify: eleventyConfig.getFilter('slugify'),
     })
   })

@@ -1,7 +1,7 @@
 {% macro active(name, strict = false) -%}
   {% if (not strict and page.url.startsWith(name)) or page.url == name -%}class="active" aria-current="page"{%- endif %}
   {%- endmacro %}
-  <nav>
+  <nav class="main-nav">
     {% picture "feather.png", "", "", [32] %}
     <input type="checkbox" id="nav-toggle" name="nav-toggle" aria-hidden="true">
     <label for="nav-toggle" aria-hidden="true">

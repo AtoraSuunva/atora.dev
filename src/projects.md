@@ -16,15 +16,20 @@ This list is non-exhaustive, and likely always will be. Many of my personal proj
   icon="feather.png") }}
 
 {{ cards.card(
+  title="Sleetcord",
+  description="A bot framework built on Discord.js. Used in all my bots, it handles interaction/event registering, routing, and handling, massively simplifying building modular bots. Publicly available, but is mainly meant for personal use.",
+  link="https://github.com/AtoraSuunva/sleetcord",
+  linkText="View on GitHub",
+  icon="bots/robototter.png") }}
+
+{{ cards.card(
   title="Booru",
   description="booru is a Node.js package to easily interface with the APIs of several boorus",
   link="https://github.com/AtoraSuunva/booru",
-  linkText="View on GitHub",
-  icon="boo") }}
+  linkText="View on GitHub") }}
 
 {{ cards.card(
   title="Bots",
   description="Mostly utility and moderation tools for Discord, with some 'fun' commands thrown in too.",
   link="/bots",
-  linkText="View bots",
-  icon="b!") }}
+  linkText="View bots") }}

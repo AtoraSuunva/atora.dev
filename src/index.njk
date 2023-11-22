@@ -26,7 +26,7 @@ description: Software developer, programmer, coder, rockstar dev, code ninja or 
         <a href="https://twitter.com/siggymcc/status/1566071435461738496">Avatar Source (Twitter/siggymc)</a>
       </p>
     </div>
-    <div class="me-irl">{% picture "siggy-bleppy.png", "Atora Suunva", "", [128] %}</div>
+    <div class="me-irl">{% picture "siggy-bleppy.png", "Atora Suunva", "", [128, 256] %}</div>
   </div>
 {% endblock header %}
 {% block main %}
@@ -57,12 +57,10 @@ description: Software developer, programmer, coder, rockstar dev, code ninja or 
     {{ cards.card(title="Booru",
         description="booru is a Node.js package to easily interface with the APIs of several boorus",
         link="https://github.com/AtoraSuunva/booru",
-        linkText="View on GitHub",
-        icon="boo") }}
+        linkText="View on GitHub") }}
     {{ cards.card(title="Bots",
         description="Mostly utility and moderation tools for Discord, with some 'fun' commands thrown in too.",
         link="/bots",
-        linkText="View bots",
-        icon="b!") }}
+        linkText="View bots") }}
   </section>
 {% endblock main %}
