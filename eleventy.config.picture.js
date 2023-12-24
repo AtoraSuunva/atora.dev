@@ -1,8 +1,20 @@
 const path = require('path')
 const eleventyImage = require('@11ty/eleventy-img')
 
-function resolvePath(src) {
-  return path.resolve('./src/img', src)
+/**
+ * Resolve a src passed to the shortcode, depending on if the src should be:
+ * - `/`: "absolute", resolve to the `src/img/<src>` directory
+ * - else: "relative", resolve based on the input path, `<input dir>/<src>`
+ * @param {string} inputPath The page to the input file (.md, .html, .njk)
+ * @param {string} src The image src passed to the shortcode, `/image.png` resolves to the `src/img/` dir, other paths are resolved relative to the input path
+ * @returns The resolved absolute path
+ */
+function resolvePath(inputPath, src) {
+  if (src.startsWith('/')) {
+    return path.resolve('./src/img', src.slice(1))
+  } else {
+    return path.resolve(path.dirname(inputPath), src)
+  }
 }
 
 function outputDir(eleventyConfig) {
@@ -36,10 +48,10 @@ function generateHTML(alt, sizes, className, metadata) {
 
 module.exports = (eleventyConfig) => {
   // https://www.11ty.dev/docs/plugins/image/
-  eleventyConfig.addAsyncShortcode(
+  eleventyConfig.addShortcode(
     'picture',
     async function (src, alt, className, widths, sizes) {
-      const file = resolvePath(src)
+      const file = resolvePath(this.page.inputPath, src)
       const metadata = await eleventyImage(
         file,
         imageOptions(widths, outputDir(eleventyConfig)),
@@ -48,10 +60,11 @@ module.exports = (eleventyConfig) => {
     },
   )
 
-  eleventyConfig.addNunjucksShortcode(
+  eleventyConfig.addShortcode(
     'picturesync',
     function (src, alt, className, widths, sizes) {
-      const file = resolvePath(src)
+      // TODO: this.path.inputPath -> this.path is undefined in macros, possible workaround?
+      const file = resolvePath('./src/img/placeholder', src)
       const options = imageOptions(widths, outputDir(eleventyConfig))
 
       // Async, but we don't wait

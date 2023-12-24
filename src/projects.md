@@ -29,6 +29,12 @@ This list is non-exhaustive, and likely always will be. Many of my personal proj
   linkText="View on GitHub") }}
 
 {{ cards.card(
+  title="Create-a-Chart",
+  description="A SPA to create a chart with labeled points, for alignment charts or whatever else. Made with Preact, hosted on Cloudflare pages.",
+  link="https://create-a-chart.pages.dev",
+  linkText="Visit Site") }}
+
+{{ cards.card(
   title="Bots",
   description="Mostly utility and moderation tools for Discord, with some 'fun' commands thrown in too.",
   link="/bots",

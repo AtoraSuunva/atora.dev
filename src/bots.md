@@ -19,7 +19,7 @@ Some of the bots I've made for Discord, usually for utility or moderation. There
   description="A public utility and moderation bot, filled with tools I've needed (and made) over the years",
   link="https://github.com/AtoraSuunva/smolbot/tree/development",
   linkText="View on GitHub",
-  icon="bots/robototter.png") }}
+  icon="/bots/robototter.png") }}
 
 {{ cards.card(
   title="SmolBot",
@@ -32,11 +32,11 @@ Some of the bots I've made for Discord, usually for utility or moderation. There
   description="Uses my booru package to search up 15 different boorus directly from within Discord",
   link="https://github.com/AtoraSuunva/BooruBot",
   linkText="View on GitHub",
-  icon="bots/boorubot.png") }}
+  icon="/bots/boorubot.png") }}
 
 {{ cards.card(
   title="BulbaTrivia",
   description="Pull Pokemon info and (useful) trivia and posts it on Discord",
   link="https://github.com/AtoraSuunva/BulbaTrivia",
   linkText="View on GitHub",
-  icon="bots/bulbatrivia.png") }}
+  icon="/bots/bulbatrivia.png") }}
