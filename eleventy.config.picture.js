@@ -47,6 +47,15 @@ function generateHTML(alt, sizes, className, metadata) {
 }
 
 module.exports = (eleventyConfig) => {
+  eleventyConfig.addFilter('resolvePNG', async function (src) {
+    const file = resolvePath(this.page.inputPath, src)
+    const metadata = await eleventyImage(
+      file,
+      imageOptions(undefined, outputDir(eleventyConfig)),
+    )
+    return metadata.png[0]
+  })
+
   // https://www.11ty.dev/docs/plugins/image/
   eleventyConfig.addShortcode(
     'picture',
@@ -57,6 +66,21 @@ module.exports = (eleventyConfig) => {
         imageOptions(widths, outputDir(eleventyConfig)),
       )
       return generateHTML(alt, sizes ?? widths, className, metadata)
+    },
+  )
+
+  eleventyConfig.addShortcode(
+    'postpicture',
+    async function (src, alt, className, widths, sizes) {
+      const file = resolvePath(this.page.inputPath, src)
+      const metadata = await eleventyImage(
+        file,
+        imageOptions(widths, outputDir(eleventyConfig)),
+      )
+
+      const img = generateHTML(alt, sizes ?? widths, className, metadata)
+
+      return `<figure class="post-picture">${img}<figcaption>${alt}</figcaption></figure>`
     },
   )
 

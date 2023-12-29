@@ -1,0 +1,53 @@
+{% macro navigation(page, pagination, href, nameMatch = false) -%}
+  {%- if pagination.pages | length > 1 -%}
+    {%- if not href -%}
+      {%- set href = pagination.href -%}
+    {%- endif -%}
+    <nav aria-labelledby="pages">
+      <h2 id="pages" class="sr-only">Pages</h2>
+      <ol class="page-list">
+        <li {% if page.url == href.first -%}class="disabled"{%- endif %}>
+          {%- if page.url != href.first -%}
+            <a href="{{ href.first }}">First<span class="sr-only">Page</span></a>
+          {%- else -%}
+            <span>First<span class="sr-only">Page</span></span>
+          {%- endif -%}
+        </li>
+        <li>
+          {%- if href.previous -%}
+            <a href="{{ href.previous }}">Prev<span class="sr-only">ivous Page</span></a>
+          {%- else -%}
+            <span>Prev<span class="sr-only">ivous Page</span></span>
+          {%- endif -%}
+        </li>
+        {%- for pageEntry in pagination.pages -%}
+          {%- if not nameMatch or pageEntry.name == page.name -%}
+            {%- if pageEntry.page != undefined -%}
+              {%- set pageNum = pageEntry.page + 1 -%}
+            {%- else -%}
+              {%- set pageNum = loop.index -%}
+            {%- endif -%}
+            <li>
+              <a href="{{ pagination.hrefs[ loop.index0 ] }}"
+                 {% if page.url == pagination.hrefs[ loop.index0 ] -%}aria-current="page"{%- endif %}><span class="sr-only">Page</span>{{ pageNum }}</a>
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+        <li>
+          {%- if href.next -%}
+            <a href="{{ href.next }}">Next<span class="sr-only">Page</span></a>
+          {%- else -%}
+            <span>Next<span class="sr-only">Page</span></span>
+          {%- endif -%}
+        </li>
+        <li>
+          {%- if page.url != href.last -%}
+            <a href="{{ href.last }}">Last<span class="sr-only">Page</span></a>
+          {%- else -%}
+            <span>Last<span class="sr-only">Page</span></span>
+          {%- endif -%}
+        </li>
+      </ol>
+    </nav>
+  {%- endif -%}
+{%- endmacro %}

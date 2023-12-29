@@ -10,6 +10,7 @@ const { EleventyHtmlBasePlugin } = require('@11ty/eleventy')
 const pluginDrafts = require('./eleventy.config.drafts.js')
 const pluginPicture = require('./eleventy.config.picture.js')
 const pluginFilters = require('./eleventy.config.filters.js')
+const pluginTagPages = require('./eleventy.config.tagPages.js')
 
 module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({
@@ -25,6 +26,7 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPlugin(pluginDrafts)
   eleventyConfig.addPlugin(pluginPicture)
   eleventyConfig.addPlugin(pluginFilters)
+  eleventyConfig.addPlugin(pluginTagPages)
 
   // Official plugins
   eleventyConfig.addPlugin(pluginRss)

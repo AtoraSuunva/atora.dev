@@ -2,7 +2,7 @@
   {% if (not strict and page.url.startsWith(name)) or page.url == name -%}class="active" aria-current="page"{%- endif %}
   {%- endmacro %}
   <nav class="main-nav">
-    <a href='/' aria-hidden="true">{% picture "/feather.png", "", "", [32] %}</a>
+    <a href="/" aria-hidden="true">{% picture "/feather.png", "", "", [32] %}</a>
     <input type="checkbox" id="nav-toggle" name="nav-toggle" aria-hidden="true">
     <label for="nav-toggle" aria-hidden="true">
       <div class="hamburger-icon"></div>
@@ -14,8 +14,8 @@
       <li {{ active("/projects") }}>
         <a href="/projects">Projects</a>
       </li>
-      <li {{ active("/blog") }}>
-        <a href="/blog">Blog</a>
+      <li {{ active("/blog/") }}>
+        <a href="/blog/">Blog</a>
       </li>
       <li {{ active("/bots") }}>
         <a href="/bots">Bots</a>

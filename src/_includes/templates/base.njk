@@ -6,19 +6,26 @@
             <meta name="viewport" content="width=device-width, initial-scale=1">
             <meta name="keywords" content="{{ tags }}" />
             {# Embed meta #}
+            {%- if image -%}
+                  {%- set metaImg = image | resolvePNG -%}
+                  <meta property="og:image" content="{{ metaImg.url }}" />
+                  <meta property="og:image:type" content="{{ metaImg.sourceType }}" />
+                  <meta property="og:image:width" content="{{ metaImg.width }}" />
+                  <meta property="og:image:height" content="{{ metaImg.height }}" />
+                  <meta name="twitter:image" content="{{ metaImg.url }}">
+            {%- else -%}
+                  <meta property="og:image" content="/resources/images/feather.png">
+                  <meta name="twitter:image" content="/resources/images/feather.png">
+            {%- endif -%}
             <meta name="description" content="{{ description }}">
-            <meta property="og:url" content="https://atora.dev/">
             <meta property="og:type" content="website">
             <meta property="og:title" content="{{ title }}">
             <meta property="og:description" content="{{ description }}">
-            <meta property="og:image" content="/resources/images/feather.png">
             <meta property="og:locale" content="en_US">
             <meta name="twitter:card" content="{{ description }}">
             <meta name="twitter:creator" content="@AtoraSuunva">
-            <meta name="twitter:url" content="https://atora.dev">
             <meta name="twitter:title" content="{{ title }}">
             <meta name="twitter:description" content="{{ description }}">
-            <meta name="twitter:image" content="/resources/images/feather.png">
             <meta name="theme-color" content="#88927B">
             {# Favicons #}
             <link rel="apple-touch-icon"
@@ -43,7 +50,7 @@
             <link rel="stylesheet" href="/resources/styles/styles.css">
             <link rel="preload" href="/resources/styles/prism.css" as="style" />
             <link rel="stylesheet" href="/resources/styles/prism.css">
-            <title>{{ title }} | atora.dev</title>
+            <title>{{ title }} - atora.dev</title>
       </head>
       <body>
             {% block content %}

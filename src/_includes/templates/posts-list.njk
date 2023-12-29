@@ -1,0 +1,9 @@
+{% import "macros/cards.njk" as cards %}
+{%- for post in postslist -%}
+  {{ cards.card(title=post.data.title,
+    date=post.date,
+    description=post.data.description,
+    image=post.data.image,
+    link=post.url,
+    linkText="Continue Reading") }}
+{%- endfor -%}

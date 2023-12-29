@@ -1,0 +1,23 @@
+---
+title: All Tags
+description: All tags used on blog posts
+pagination:
+  data: collections.tags
+  size: 32
+  alias: tags
+  reverse: true
+permalink: "/blog/tags/{% if pagination.pageNumber > 0 %}{{ pagination.pageNumber + 1 }}/{% endif %}index.html"
+---
+
+{% import "macros/paginated.njk" as paginated %}
+{{ paginated.navigation(page, pagination) }}
+<ul>
+  {% for tag in tags %}
+    {% set tagUrl %}
+      /blog/tagged/{{ tag | slugify }}/
+    {% endset %}
+    <li>
+      <a href="{{ tagUrl }}" class="post-tag">{{ tag }}</a>
+    </li>
+  {% endfor %}
+</ul>

@@ -9,10 +9,12 @@
             {{ title }} <small>{{ subtitle }}</small>
           </h1>
           <p class="description">{{ description }}</p>
+          {%- block headerTail -%}
+          {%- endblock -%}
         </div>
       {%- endblock -%}
     </header>
-    <main>
+    <main {% block mainAttributes -%}{%- endblock -%}>
       {%- block main -%}{{ content | safe }}{%- endblock %}
       </main>
     </div>

@@ -3,6 +3,8 @@ layout:
 permalink: index.html
 title: Atora Suunva
 description: Software developer, programmer, coder, rockstar dev, code ninja or whatever else you call someone who writes code for a living. This is my personal site to post my cool things.
+eleventyImport:
+  collections: ["posts"]
 ---
 
 {% extends "templates/page.njk" %}
@@ -35,19 +37,15 @@ description: Software developer, programmer, coder, rockstar dev, code ninja or 
   <section>
     {% import "macros/cards.njk" as cards %}
     <h2>Recent Posts</h2>
-    {{ cards.card(title="Test post please ignore",
-        description="This is an example post please ignore it.",
-        link="/blog/test-post-please-ignore",
-        linkText="Continue Reading",
-        image="/flower-closed.png") }}
-    {{ cards.card(title="Second test post",
-        description="Another test post until I finish it.",
-        link="/blog/test-post-please-ignore",
-        linkText="Continue Reading") }}
-    {{ cards.card(title="Third test post",
-        description="More example text showing the post description preview.",
-        link="/blog/test-post-please-ignore",
-        linkText="Continue Reading") }}
+    {% set postslist = collections.posts | reverse | head(3) %}
+    {%- for post in postslist -%}
+      {{ cards.card(title=post.data.title,
+            date=post.date,
+            description=post.data.description,
+            image=post.data.image,
+            link=post.url,
+            linkText="Continue Reading") }}
+    {%- endfor -%}
   </section>
   <section>
     <h2>Recent Projects</h2>

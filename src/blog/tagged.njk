@@ -1,0 +1,18 @@
+---
+pagination:
+  data: collections.tagPages
+  size: 1
+  alias: page
+eleventyComputed:
+  title: Posts Tagged "{{ page.name }}"
+permalink: "/blog/tagged/{{ page.name | slugify }}/{% if page.page > 0 %}{{ page.page + 1 }}/{% endif %}index.html"
+---
+
+<p>
+  See <a href="/blog/tags/">all tags</a>.
+</p>
+{%- set href = collections.tagPages | getTaggedNavigation(page) -%}
+{% import "macros/paginated.njk" as paginated %}
+{{ paginated.navigation(page, pagination, href, true) }}
+{% set postslist = page.items %}
+{% include "templates/posts-list.njk" %}

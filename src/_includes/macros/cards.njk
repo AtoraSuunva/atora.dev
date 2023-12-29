@@ -9,7 +9,7 @@
       <div class="card-main">
         <div class="card-text">
           <h3>
-            {{ title }}{%- if date -%}<small>{{ date }}</small>{%- endif -%}
+            {{ title }}{%- if date -%}<small><time datetime="{{ date | htmlDateString }}">{{ date | readableDate }}</time></small>{%- endif -%}
           </h3>
           <p>{{ description }}</p>
         </div>

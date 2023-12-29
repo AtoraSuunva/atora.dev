@@ -42,6 +42,12 @@ module.exports = function (eleventyConfig) {
     ),
   )
 
+  eleventyConfig.addCollection('tags', (collection) =>
+    eleventyConfig.getFilter('filterTagList')(
+      eleventyConfig.getFilter('getAllTags')(collection.getAll()),
+    ),
+  )
+
   eleventyConfig.addShortcode('formatDate', (date, format) =>
     DateTime.fromJSDate(date, { zone: 'utc' }).toFormat(format ?? 'yyyy'),
   )
@@ -49,4 +55,8 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addShortcode('formatNow', (format) =>
     DateTime.now().toFormat(format ?? 'yyyy'),
   )
+
+  eleventyConfig.addFilter('stringify', (data) => {
+    return JSON.stringify(data, null, '\t')
+  })
 }
