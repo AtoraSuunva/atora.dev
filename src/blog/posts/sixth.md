@@ -3,8 +3,13 @@ title: The sixth post
 description: This is the sixth post ever made, with an image
 date: 2023-12-06
 image: /flower-closed.png
+imageAlt: Atora with eyes closed and a flower :)
 tags:
   - programming
+  - another tag
+  - lorem ipsum
+  - gaming
+  - dummy data
 ---
 
 This is some super exciting placeholder text

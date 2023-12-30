@@ -341,15 +341,16 @@ label[for="nav-toggle"] {
 }
 
 .post-tags {
+  display: inline-block;
   list-style: none;
   padding: 0;
-  display: inline;
+  line-height: 2em;
+  margin: 0.25em 0;
 }
 
 .post-tags>li {
   background: var(--tertiary-color);
-  display: inline;
-  padding: 0.3em 0.3em;
+  display: inline flow-root list-item;
   margin: 0.2em;
   border-radius: 0.5em;
   transition: all 0.3s ease-in-out;
@@ -360,9 +361,17 @@ label[for="nav-toggle"] {
   background-color: var(--active-tertiary-color);
 }
 
-.post-tags>li>a {
+.post-tags>li>* {
+  display: inline-block;
   color: var(--main-font);
   text-decoration: none;
+  height: 100%;
+  width: 100%;
+  padding: 0 0.3em;
+}
+
+.card-text>.post-tags {
+  margin-top: 0.5em;
 }
 
 p>code {
@@ -423,8 +432,10 @@ blockquote {
 }
 
 .post-picture picture img {
+  height: auto;
   max-height: 350px;
   width: auto;
+  max-width: 100%;
 }
 
 .post-picture {

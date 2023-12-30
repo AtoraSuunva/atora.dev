@@ -41,8 +41,10 @@ eleventyImport:
     {%- for post in postslist -%}
       {{ cards.card(title=post.data.title,
             date=post.date,
+            tags=post.data.tags,
             description=post.data.description,
             image=post.data.image,
+            imageAlt=post.data.imageAlt,
             link=post.url,
             linkText="Continue Reading") }}
     {%- endfor -%}
@@ -53,7 +55,8 @@ eleventyImport:
         description="I wrote all of this from scratch myself",
         link="/",
         linkText="You're already on it!",
-        icon="/feather.png") }}
+        icon="/feather.png",
+        iconAlt="A green, beige, and purple feather") }}
     {{ cards.card(title="Booru",
         description="booru is a Node.js package to easily interface with the APIs of several boorus",
         link="https://github.com/AtoraSuunva/booru",

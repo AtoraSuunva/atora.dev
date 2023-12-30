@@ -6,15 +6,8 @@
     </div>
     <div>
       Tags:
-      <ul class="post-tags">
-        {%- for tag in tags | filterTagList %}
-          {%- set tagUrl %}/blog/tagged/{{ tag | slugify }}/
-          {% endset %}
-          <li>
-            <a href="{{ tagUrl }}" class="post-tag">#{{ tag }}</a>
-          </li>
-        {%- endfor %}
-      </ul>
+      {% import "macros/tags.njk" as tagMacro %}
+      {{ tagMacro.tagList(tags) }}
     </div>
   </div>
 {%- endblock -%}
@@ -22,6 +15,9 @@
   class="post-content"
 {%- endblock -%}
 {%- block main -%}
+  {% if image %}
+    {% postpicture image, imageAlt %}
+  {% endif %}
   {{ content | safe }}
   {%- if collections.posts %}
     {%- set previousPost = collections.posts | getPreviousCollectionItem %}

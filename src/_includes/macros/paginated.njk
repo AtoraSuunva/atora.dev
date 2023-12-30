@@ -1,8 +1,8 @@
 {% macro navigation(page, pagination, href, nameMatch = false) -%}
-  {%- if pagination.pages | length > 1 -%}
-    {%- if not href -%}
-      {%- set href = pagination.href -%}
-    {%- endif -%}
+  {%- if not href -%}
+    {%- set href = pagination.href -%}
+  {%- endif -%}
+  {%- if (pagination.pages | length > 1) and not (page.url == href.first and page.url == href.last) -%}
     <nav aria-labelledby="pages">
       <h2 id="pages" class="sr-only">Pages</h2>
       <ol class="page-list">

@@ -13,14 +13,16 @@ This list is non-exhaustive, and likely always will be. Many of my personal proj
   description="I wrote all of this from scratch myself",
   link="/",
   linkText="You're already on it!",
-  icon="feather.png") }}
+  icon="feather.png",
+  iconAlt="A green, beige, and purple feather") }}
 
 {{ cards.card(
   title="Sleetcord",
   description="A bot framework built on Discord.js. Used in all my bots, it handles interaction/event registering, routing, and handling, massively simplifying building modular bots. Publicly available, but is mainly meant for personal use.",
   link="https://github.com/AtoraSuunva/sleetcord",
   linkText="View on GitHub",
-  icon="bots/robototter.png") }}
+  icon="bots/robototter.png",
+  iconAlt="Drawing of an otter floating in water") }}
 
 {{ cards.card(
   title="Booru",
