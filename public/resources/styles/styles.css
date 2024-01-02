@@ -145,6 +145,17 @@ h2:not(:first-of-type) {
   margin-top: 2em;
 }
 
+main>h2,
+main>h3,
+main>h4,
+main>h5,
+main>h6 {
+  position: sticky;
+  top: 0px;
+  background: var(--nav-background);
+  padding: 0.5em;
+}
+
 footer {
   display: flex;
   flex-direction: column;
