@@ -1,6 +1,6 @@
 {
   "include": ["src"],
-  "exclude": ["**/node_modules", "**/.*/"],
+  "exclude": ["**/node_modules", "**/.*/", "**/*.js", "**/*.d.ts"],
   "compilerOptions": {
     /* Projects */
     "composite": true,
