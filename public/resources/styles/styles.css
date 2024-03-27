@@ -93,6 +93,18 @@ nav.table-of-contents {
   box-shadow: var(--box-shadow);
   border-radius: 0.5em;
   display: inline-block;
+  margin: 0 1em 1em 0;
+}
+
+@media screen and (min-width: 1768px) {
+  main .table-of-contents {
+    position: sticky;
+    top: 20px;
+    float: left;
+    shape-outside: inset(50% 100% 50% 0px);
+    transform: translate(-110%);
+    width: 275px;
+  }
 }
 
 .table-of-contents>ol {
@@ -150,10 +162,13 @@ main>h3,
 main>h4,
 main>h5,
 main>h6 {
-  position: sticky;
-  top: 0px;
   background: var(--nav-background);
   padding: 0.5em;
+  border-radius: 0.2em;
+}
+
+main> :nth-child(1 of :not(nav)) {
+  margin-top: 0;
 }
 
 footer {
@@ -391,15 +406,16 @@ p>code {
   padding: 0.2em;
 }
 
+blockquote {
+  width: fit-content;
+  border-left: 0.3em solid var(--secondary-color);
+  border-radius: 0.2em;
+  background: var(--background-darken);
+}
+
 blockquote>p {
   margin: 0;
   padding: 1em;
-}
-
-blockquote {
-  border-left: 0.2em solid var(--secondary-color);
-  border-radius: 0.1em;
-  background: var(--background-darken);
 }
 
 .page-list {
@@ -442,19 +458,24 @@ blockquote {
   box-shadow: var(--box-shadow-raised);
 }
 
-.post-picture picture img {
-  height: auto;
-  max-height: 350px;
-  width: auto;
-  max-width: 100%;
-}
-
 .post-picture {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
   padding: 1em;
+}
+
+.post-picture picture img {
+  height: auto;
+  max-height: 350px;
+  width: auto;
+  max-width: 100%;
+  border-radius: 0.2em;
+}
+
+.post-picture figcaption {
+  font-size: 0.85em;
 }
 
 @media screen and (max-width: 600px) {
@@ -526,6 +547,11 @@ blockquote {
   nav.main-nav #nav-toggle:checked~label .hamburger-icon:after {
     transform: translate(-3px, -3px) rotate(-45deg);
     width: 18px;
+  }
+
+  nav.table-of-contents {
+    width: 100%;
+    padding: 0;
   }
 
   main {
