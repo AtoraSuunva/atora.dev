@@ -1,4 +1,4 @@
-const path = require('path')
+const path = require('node:path')
 const eleventyImage = require('@11ty/eleventy-img')
 
 /**
@@ -12,9 +12,9 @@ const eleventyImage = require('@11ty/eleventy-img')
 function resolvePath(inputPath, src) {
   if (src.startsWith('/')) {
     return path.resolve('./src/img', src.slice(1))
-  } else {
-    return path.resolve(path.dirname(inputPath), src)
   }
+
+  return path.resolve(path.dirname(inputPath), src)
 }
 
 function outputDir(eleventyConfig) {
@@ -86,7 +86,7 @@ module.exports = (eleventyConfig) => {
 
   eleventyConfig.addShortcode(
     'picturesync',
-    function (src, alt, className, widths, sizes) {
+    (src, alt, className, widths, sizes) => {
       // TODO: this.path.inputPath -> this.path is undefined in macros, possible workaround?
       const file = resolvePath('./src/img/placeholder', src)
       const options = imageOptions(widths, outputDir(eleventyConfig))

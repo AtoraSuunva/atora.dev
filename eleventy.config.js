@@ -12,7 +12,7 @@ const pluginPicture = require('./eleventy.config.picture.js')
 const pluginFilters = require('./eleventy.config.filters.js')
 const pluginTagPages = require('./eleventy.config.tagPages.js')
 
-module.exports = function (eleventyConfig) {
+module.exports = (eleventyConfig) => {
   eleventyConfig.addPassthroughCopy({
     './public/': '/',
     './node_modules/prismjs/themes/prism-okaidia.css':

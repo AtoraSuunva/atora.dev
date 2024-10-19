@@ -4,19 +4,16 @@ const _ = require('@11ty/lodash-custom')
 function classify(collection, tagExtractor) {
   const classified = {}
 
-  collection.items.forEach((item) => {
+  for (const item of collection.items) {
     const tags = tagExtractor(item)
-    if (tags.length === 0) {
-      return
-    }
 
-    tags.forEach((tag) => {
+    for (const tag of tags) {
       if (!classified[tag]) {
         classified[tag] = []
       }
       classified[tag].push(item)
-    })
-  })
+    }
+  }
 
   return classified
 }

@@ -1,6 +1,6 @@
 const { DateTime } = require('luxon')
 
-module.exports = function (eleventyConfig) {
+module.exports = (eleventyConfig) => {
   eleventyConfig.addFilter('readableDate', (dateObj, format, zone) => {
     return DateTime.fromJSDate(dateObj, { zone: zone || 'utc' }).toFormat(
       format || 'dd LLLL yyyy',
@@ -15,11 +15,13 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addFilter('head', (array, n) => {
     if (!Array.isArray(array) || array.length === 0) {
       return []
-    } else if (n < 0) {
-      return array.slice(n)
-    } else {
-      return array.slice(0, n)
     }
+
+    if (n < 0) {
+      return array.slice(n)
+    }
+
+    return array.slice(0, n)
   })
 
   // Return the smallest number argument
@@ -29,8 +31,9 @@ module.exports = function (eleventyConfig) {
 
   // Return all the tags used in a collection
   eleventyConfig.addFilter('getAllTags', (collection) => {
-    let tagSet = new Set()
-    for (let item of collection) {
+    const tagSet = new Set()
+    for (const item of collection) {
+      // biome-ignore lint/complexity/noForEach: performance: not chained with any other methods, readability: simple callback, debugging: macro :(
       item.data?.tags?.forEach((tag) => tagSet.add(tag))
     }
     return Array.from(tagSet)
