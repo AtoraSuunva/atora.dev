@@ -1,6 +1,6 @@
 ---
 title: About
-subtitle: More details!
+subtitle: Me!
 description: Who is this funny computer person on the internet
 ---
 
@@ -20,41 +20,21 @@ Suunva -> Soon-vah
 
 ## What languages do you know?
 
-A bunch. Typescript, Javascript, Rust, Python, Java, C#, PHP, SQL are all ones I'm pretty good at. I've also dabbled in things like C++, Basic, Ruby, Lisp, Prolog, and others, but never super seriously.
+A bunch: Typescript, Javascript, Rust, Python, Java, C#, PHP, SQL are all ones I'm pretty good at. I have some experience in C++, Basic, Ruby, Lisp, Prolog, and others, but nothing fully committed.
 
-## What do you actually use then?
+## What languages do you use?
 
-Node.js + Typescript, Javascript if desperate. Rust. Python if I've gotta work with Python devs. Java and PHP when school assignments forced me to. SQL for database stuff, when Prisma isn't enough or I can't use Prisma. I guess Docker also counts.
-
-## How good are you?
-
-Well I hold 2 degrees in Computer Science and have 10+ years experience programming, I really hope I've gotten good at this or it was all a waste.
-
-If you mean how I feel, pretty good. If you mean in general, pretty good. If you mean morally, half my friends would fight me on sight sometimes (they know that is the cost of my friendship, dealing with my crazy messages).
+Node.js + Typescript (or Javascript). Rust. Python if I have to work with Python devs. Java and PHP when school assignments forced me to. SQL for database stuff, when Prisma isn't enough, or I can't use Prisma. Docker probably counts.
 
 ## What's the site built in?
 
 I built it using [Eleventy](https://www.11ty.dev/) and it's deployed on [Cloudflare Pages](https://pages.cloudflare.com/). It's a whole combination of templates and markdown and plugins that renders to a static site, it's pretty neat. You can check the source code [on GitHub](https://github.com/atorasuunva/atora.dev) or click the links in the footer on any page to jump right to that page's source
 
-## Can you do X for me for money?
+## Can you do X for me?
 
-Probably not, unless you've got a very compelling offer. I'm not really a freelance person (as of now anyway).
+If it's a feature request/bug report/help request for one of my projects, open up a GitHub issue on the respective repo or send me the request directly. I may or may not respond depending on how busy I am, but I'll try.
 
-## Can you do X for me for free?
-
-no
-
-## But I've got this really good idea...
-
-go away
-
-## I saw you commission art, do you wanna comm me?
-
-Unless you're like one of the 3 artists on my "really wanna comm" list, no.
-
-## Are you Turkish?
-
-No, why do people keep asking me this???
+If you're asking me to do work for you that isn't related to any of my projects, pay me.
 
 ---
 
