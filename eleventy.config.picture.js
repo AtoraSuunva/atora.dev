@@ -1,5 +1,5 @@
-const path = require('node:path')
-const eleventyImage = require('@11ty/eleventy-img')
+import path from 'node:path'
+import eleventyImage from '@11ty/eleventy-img'
 
 /**
  * Resolve a src passed to the shortcode, depending on if the src should be:
@@ -46,7 +46,7 @@ function generateHTML(alt, sizes, className, metadata) {
   return className ? html.replace(/^<(\w+)/, `<$1 class="${className}"`) : html
 }
 
-module.exports = (eleventyConfig) => {
+export default function picture(eleventyConfig) {
   eleventyConfig.addFilter('resolvePNG', async function (src) {
     const file = resolvePath(this.page.inputPath, src)
     const metadata = await eleventyImage(

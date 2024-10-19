@@ -1,18 +1,18 @@
-const markdownItAnchor = require('markdown-it-anchor')
-const markdownItTOC = require('markdown-it-toc-done-right')
+import markdownItAnchor from 'markdown-it-anchor'
+import markdownItTOC from 'markdown-it-toc-done-right'
 
-const pluginRss = require('@11ty/eleventy-plugin-rss')
-const pluginSyntaxHighlight = require('@11ty/eleventy-plugin-syntaxhighlight')
-const pluginBundle = require('@11ty/eleventy-plugin-bundle')
-const pluginNavigation = require('@11ty/eleventy-navigation')
-const { EleventyHtmlBasePlugin } = require('@11ty/eleventy')
+import { EleventyHtmlBasePlugin } from '@11ty/eleventy'
+import pluginNavigation from '@11ty/eleventy-navigation'
+import pluginBundle from '@11ty/eleventy-plugin-bundle'
+import pluginRss from '@11ty/eleventy-plugin-rss'
+import pluginSyntaxHighlight from '@11ty/eleventy-plugin-syntaxhighlight'
 
-const pluginDrafts = require('./eleventy.config.drafts.js')
-const pluginPicture = require('./eleventy.config.picture.js')
-const pluginFilters = require('./eleventy.config.filters.js')
-const pluginTagPages = require('./eleventy.config.tagPages.js')
+import pluginDrafts from './eleventy.config.drafts.js'
+import pluginFilters from './eleventy.config.filters.js'
+import pluginPicture from './eleventy.config.picture.js'
+import pluginTagPages from './eleventy.config.tagPages.js'
 
-module.exports = (eleventyConfig) => {
+export default (eleventyConfig) => {
   eleventyConfig.addPassthroughCopy({
     './public/': '/',
     './node_modules/prismjs/themes/prism-okaidia.css':

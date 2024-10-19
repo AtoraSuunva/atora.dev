@@ -1,4 +1,4 @@
-function eleventyComputedPermalink() {
+export function eleventyComputedPermalink() {
   // When using `addGlobalData` and you *want* to return a function, you must nest functions like this.
   // `addGlobalData` acts like a global data file and runs the top level function it receives.
   return (data) => {
@@ -11,7 +11,7 @@ function eleventyComputedPermalink() {
   }
 }
 
-function eleventyComputedExcludeFromCollections() {
+export function eleventyComputedExcludeFromCollections() {
   // When using `addGlobalData` and you *want* to return a function, you must nest functions like this.
   // `addGlobalData` acts like a global data file and runs the top level function it receives.
   return (data) => {
@@ -23,12 +23,7 @@ function eleventyComputedExcludeFromCollections() {
     return data.eleventyExcludeFromCollections
   }
 }
-
-module.exports.eleventyComputedPermalink = eleventyComputedPermalink
-module.exports.eleventyComputedExcludeFromCollections =
-  eleventyComputedExcludeFromCollections
-
-module.exports = (eleventyConfig) => {
+export default function drafts(eleventyConfig) {
   eleventyConfig.addGlobalData(
     'eleventyComputed.permalink',
     eleventyComputedPermalink,

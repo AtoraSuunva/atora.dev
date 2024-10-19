@@ -1,6 +1,6 @@
-const { DateTime } = require('luxon')
+import { DateTime } from 'luxon'
 
-module.exports = (eleventyConfig) => {
+export default function filters(eleventyConfig) {
   eleventyConfig.addFilter('readableDate', (dateObj, format, zone) => {
     return DateTime.fromJSDate(dateObj, { zone: zone || 'utc' }).toFormat(
       format || 'dd LLLL yyyy',

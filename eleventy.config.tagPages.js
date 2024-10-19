@@ -1,6 +1,4 @@
 // Adapted from https://desmondrivet.com/2022/03/23/eleventy-pagination
-const _ = require('@11ty/lodash-custom')
-
 function classify(collection, tagExtractor) {
   const classified = {}
 
@@ -38,7 +36,7 @@ function flatPaginate(indexedCollection, size) {
     const sortedCollection = indexedCollection[tagName].sort((a, b) => {
       return b.date - a.date
     })
-    const pagedItems = _.chunk(sortedCollection, size)
+    const pagedItems = toChunks(sortedCollection, size)
 
     for (let pageNumber = 0; pageNumber < pagedItems.length; pageNumber++) {
       const page = {
@@ -55,7 +53,7 @@ function flatPaginate(indexedCollection, size) {
   return pages
 }
 
-module.exports = (eleventyConfig) => {
+export default function tagPages(eleventyConfig) {
   eleventyConfig.addCollection('tagPages', (collection) =>
     flatPaginate(indexByTag(collection), 12),
   )
@@ -87,4 +85,14 @@ module.exports = (eleventyConfig) => {
       next: next?.url,
     }
   })
+}
+
+function toChunks(array, size) {
+  const chunks = []
+
+  for (let i = 0; i < array.length; i += size) {
+    chunks.push(array.slice(i, i + size))
+  }
+
+  return chunks
 }

@@ -2,6 +2,7 @@
   "name": "atora.dev",
   "version": "1.0.0",
   "description": "One of the websites of all time",
+  "type": "module",
   "scripts": {
     "build": "npm-run-all build:*",
     "build:clean": "rimraf _site/ && rimraf src/**/*.js && rimraf src/**/*.d.ts && rimraf src/**/*.js.map && rimraf src/**/*.d.ts.map && rimraf .tsbuildinfo",
@@ -33,20 +34,20 @@
   },
   "homepage": "https://atora.dev",
   "devDependencies": {
-    "@11ty/eleventy": "^2.0.1",
-    "@11ty/eleventy-img": "^4.0.2",
+    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-img": "^5.0.0",
     "@11ty/eleventy-navigation": "^0.3.5",
-    "@11ty/eleventy-plugin-bundle": "^1.0.5",
-    "@11ty/eleventy-plugin-rss": "^1.2.0",
+    "@11ty/eleventy-plugin-bundle": "^3.0.0",
+    "@11ty/eleventy-plugin-rss": "^2.0.2",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
     "@biomejs/biome": "^1.9.4",
-    "@types/node": "^20.11.30",
-    "luxon": "^3.4.4",
-    "markdown-it-anchor": "^8.6.7",
+    "@types/node": "^22.7.7",
+    "luxon": "^3.5.0",
+    "markdown-it-anchor": "^9.2.0",
     "markdown-it-toc-done-right": "^4.2.0",
     "npm-run-all": "^4.1.5",
     "prismjs": "^1.29.0",
-    "rimraf": "^5.0.5",
-    "typescript": "^5.4.3"
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.3"
   }
 }
