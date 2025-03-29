@@ -1,6 +1,7 @@
 ---
 import childProcess from "child_process";
 import { fileURLToPath } from "url";
+import FormattedDate from "./FormattedDate.astro";
 
 const today = new Date();
 
@@ -14,16 +15,21 @@ const commitBranch = childProcess
   .toString()
   .trim();
 
-const inputFile = fileURLToPath(import.meta.url);
+// TODO: some way to get the import path of the current page...
+// const inputFile = fileURLToPath(import.meta.url);
 
 const lastModified = childProcess
-  .execSync(`git log -1 --pretty="format:%cI" "${inputFile}"`)
+  // .execSync(`git log -1 --pretty="format:%cI" "${inputFile}"`)
+  .execSync(`git log -1 --pretty="format:%cI"`)
   .toString()
   .trim();
 
-const cwd = process.cwd();
-const sourcePath = inputFile.substring(cwd.length);
-const commitURL = `https://github.com/AtoraSuunva/atora.dev/blob/${commitSHA}${sourcePath}`;
+const lastModifiedDate = lastModified ? new Date(lastModified) : null;
+
+// const cwd = process.cwd();
+// const sourcePath = inputFile.substring(cwd.length);
+// const commitURL = `https://github.com/AtoraSuunva/atora.dev/blob/${commitSHA}${sourcePath}`;
+const commitURL = `https://github.com/AtoraSuunva/atora.dev/blob/${commitSHA}`;
 ---
 
 <style>
@@ -44,10 +50,19 @@ const commitURL = `https://github.com/AtoraSuunva/atora.dev/blob/${commitSHA}${s
 </style>
 
 <footer class="dark-stripes">
-  <p class="muted">Last Modified: {lastModified || "uncommitted"}</p>
-  <p>
-    <a href={commitURL}>{commitBranch}/{commitSHA.slice(0, 7)}</a> • {
-      today.getFullYear()
-    } Atora Suunva
+  <p class="muted">
+    Last Commit: {
+      lastModifiedDate ? (
+        <FormattedDate date={lastModifiedDate} showTime={true} />
+      ) : (
+        "uncommitted"
+      )
+    }
   </p>
+  <p>
+    <a href={commitURL}>{commitBranch}/{commitSHA.slice(0, 7)}</a> • <a
+      href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a
+    >
+  </p>
+  <p>© {today.getFullYear()} Atora Suunva</p>
 </footer>

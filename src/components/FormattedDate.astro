@@ -1,21 +1,24 @@
 ---
 interface Props {
   date: Date;
+  showTime: boolean;
 }
 
-const { date } = Astro.props;
+const { date, showTime = false } = Astro.props;
 
 const dateFormat: Intl.DateTimeFormatOptions = {
   year: "numeric",
   month: "long",
   day: "numeric",
+  ...(showTime && { hour: "2-digit", minute: "2-digit" }),
 };
 ---
 
 <script>
   // Re-format time into the browser's locale
   document.addEventListener("DOMContentLoaded", () => {
-    const timeElements = document.getElementsByClassName("formatted-date");
+    const timeElements =
+      document.querySelectorAll<HTMLElement>(".formatted-date");
 
     for (const te of timeElements) {
       const datetime = te.getAttribute("datetime");
@@ -31,11 +34,19 @@ const dateFormat: Intl.DateTimeFormatOptions = {
         year: "numeric",
         month: "long",
         day: "numeric",
+        ...(te.dataset.showtime === "true" && {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
       });
     }
   });
 </script>
 
-<time class="formatted-date" datetime={date.toISOString()}>
+<time
+  class="formatted-date"
+  datetime={date.toISOString()}
+  data-showtime={showTime}
+>
   {date.toLocaleDateString("en-ca", dateFormat)}
 </time>
