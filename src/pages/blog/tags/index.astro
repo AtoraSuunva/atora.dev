@@ -1,0 +1,35 @@
+---
+import { getCollection } from "astro:content";
+import PageLayout from "@layouts/PageLayout.astro";
+
+const posts = await getCollection("blog");
+const uniqueTags = [...new Set(posts.flatMap((p) => p.data.tags ?? []))];
+
+const postsByTag = uniqueTags
+  .map((tag) => ({
+    tag,
+    posts: posts.filter((post) => post.data.tags?.includes(tag)),
+  }))
+  .sort((a, b) => b.posts.length - a.posts.length);
+---
+
+<PageLayout
+  title="All Tags"
+  subtitle={`${uniqueTags.length} tag${uniqueTags.length === 1 ? "" : "s"}`}
+>
+  <p slot="headerTail">
+    <a href="/blog/">See all posts</a>
+  </p>
+
+  <ul>
+    {
+      postsByTag.map(({ tag, posts }) => (
+        <li>
+          <a href={`/blog/tags/${tag}/`}>
+            {tag} ({posts.length})
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</PageLayout>

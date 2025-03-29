@@ -1,0 +1,172 @@
+---
+import type { MarkdownHeading } from "astro";
+
+interface Props {
+  headings?: MarkdownHeading[];
+}
+
+const { headings = [] } = Astro.props;
+
+let currentDepth = 1; // Start at 1 because we're using <h1> for the post title
+const formattedHeadings = [];
+
+for (const heading of headings) {
+  const { depth, text, slug } = heading;
+  let startDepth = depth;
+
+  while (startDepth > currentDepth) {
+    formattedHeadings.push(`<ol>`);
+    startDepth--;
+  }
+
+  while (startDepth < currentDepth) {
+    formattedHeadings.push(`</ol>`);
+    startDepth++;
+  }
+
+  formattedHeadings.push(`<li><a href="#${slug}">${text}</a></li>`);
+  currentDepth = depth;
+}
+
+if (formattedHeadings.length > 0) {
+  formattedHeadings.push(`</ol>`);
+}
+---
+
+<style>
+  .toc-container {
+    display: inline-block;
+    padding: 0.75em;
+    margin: 0.25em 0 2em 0;
+    background-color: var(--background-darken);
+    box-shadow: var(--box-shadow-raised);
+    border-radius: var(--border-radius);
+  }
+
+  nav.table-of-contents {
+    display: inline-block;
+    padding: 0 0.25em;
+    margin: 0;
+  }
+
+  nav.table-of-contents :global(ol) {
+    margin: 0.5em 0;
+    list-style: none;
+  }
+
+  nav.table-of-contents :global(ol) :global(ol) {
+    list-style: disc;
+  }
+
+  nav.table-of-contents :global(ol) :global(li) {
+    margin: 0.25em 0;
+    padding: 0;
+  }
+
+  nav.table-of-contents > :global(ol) {
+    padding: 0 2em;
+  }
+
+  nav.table-of-contents :global(li) {
+    margin: 0.75em 0;
+  }
+
+  nav.table-of-contents :global(a) {
+    border-left: 0px solid var(--secondary-color);
+    padding-left: 0;
+    transition: all 0.3s ease-in-out;
+  }
+
+  nav.table-of-contents :global(.bold) {
+    border-left: 4px solid var(--secondary-color);
+    padding-left: 0.5em;
+  }
+
+  @media screen and (min-width: 1768px) {
+    .toc-container {
+      position: sticky;
+      top: 20px;
+      float: left;
+      shape-outside: inset(50% 100% 50% 0px);
+      transform: translate(-120%);
+      width: 275px;
+      max-height: calc(100vh - 40px);
+      overflow-y: auto;
+      background-color: color-mix(in oklch, black 30%, var(--main-background));
+
+      --thumbBG: var(--secondary-color);
+      --scrollbarBG: transparent;
+      scrollbar-width: thin;
+      scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+    }
+
+    .toc-container::-webkit-scrollbar-track {
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      border-radius: 10px;
+      background-color: var(--scrollbarBG);
+    }
+
+    .toc-container::-webkit-scrollbar {
+      width: 6px;
+      background-color: var(--scrollbarBG);
+    }
+
+    .toc-container::-webkit-scrollbar-thumb {
+      border-radius: 10px;
+      -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+      background-color: var(--thumbBG);
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const article = document.querySelector("article");
+    if (!article) return;
+
+    const headings = Array.from(
+      article.querySelectorAll<HTMLElement>("h2,h3,h4,h5,h6")
+    );
+
+    const tocLinks = Array.from(
+      document.querySelectorAll<HTMLAnchorElement>(".table-of-contents a")
+    );
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        let currentHeading = null;
+
+        for (const h of headings) {
+          if (window.scrollY >= h.offsetTop) {
+            currentHeading = h;
+          } else if (window.scrollY < h.offsetTop) {
+            break;
+          }
+        }
+
+        for (const toc of tocLinks) {
+          if (currentHeading && toc.href.endsWith(`#${currentHeading.id}`)) {
+            toc.classList.add("bold");
+          } else {
+            toc.classList.remove("bold");
+          }
+        }
+      },
+      {
+        passive: true,
+      }
+    );
+  });
+</script>
+
+{
+  formattedHeadings.length > 0 && (
+    <details class="toc-container">
+      <summary>Table of Contents</summary>
+      <nav class="table-of-contents">
+        <Fragment set:html={formattedHeadings.join("")} />
+      </nav>
+    </details>
+  )
+}

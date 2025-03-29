@@ -1,21 +1,9 @@
 {
   "name": "atora.dev",
-  "version": "1.0.0",
-  "description": "One of the websites of all time",
   "type": "module",
-  "scripts": {
-    "build": "npm-run-all build:*",
-    "build:clean": "rimraf _site/ && rimraf src/**/*.js && rimraf src/**/*.d.ts && rimraf src/**/*.js.map && rimraf src/**/*.d.ts.map && rimraf .tsbuildinfo",
-    "build:ts": "tsc --build",
-    "build:11": "npx @11ty/eleventy",
-    "watch:ts": "tsc --build --watch",
-    "watch:11": "npx @11ty/eleventy --serve --incremental",
-    "lint": "biome check && tsc --noEmit",
-    "lint:fix": "biome check --write && tsc --noEmit",
-    "start:dev": "NODE_ENV=development npm-run-all --parallel watch:*",
-    "start:debug": "DEBUG=Eleventy* npm run start:dev",
-    "benchmark": "DEBUG=Eleventy:Benchmark* npm run build"
-  },
+  "version": "2.0.0",
+  "description": "One of the websites of all time",
+  "homepage": "https://atora.dev",
   "repository": {
     "type": "git",
     "url": "git://github.com/atorasuunva/atora.dev.git"
@@ -25,29 +13,47 @@
     "email": "at@atora.dev",
     "url": "https://atora.dev/"
   },
-  "license": "MIT",
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
-  "bugs": {
-    "url": "https://github.com/atorasuunva/atora.dev/issues"
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro check && astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
-  "homepage": "https://atora.dev",
+  "dependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@astrojs/mdx": "^4.2.2",
+    "@astrojs/rss": "^4.0.11",
+    "@astrojs/sitemap": "^3.3.0",
+    "@fontsource-variable/roboto": "^5.2.5",
+    "@fontsource-variable/source-code-pro": "^5.2.5",
+    "astro": "^5.5.5",
+    "mdast-util-to-string": "^4.0.0",
+    "reading-time": "^1.5.0",
+    "rehype-autolink-headings": "^7.1.0",
+    "rehype-callouts": "^2.0.2",
+    "rehype-figure": "^1.0.1",
+    "rehype-semantic-blockquotes": "^3.0.7",
+    "rehype-slug": "^6.0.0",
+    "sharp": "^0.33.5",
+    "typescript": "^5.8.2"
+  },
   "devDependencies": {
-    "@11ty/eleventy": "^3.0.0",
-    "@11ty/eleventy-img": "^5.0.0",
-    "@11ty/eleventy-navigation": "^0.3.5",
-    "@11ty/eleventy-plugin-bundle": "^3.0.0",
-    "@11ty/eleventy-plugin-rss": "^2.0.2",
-    "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
     "@biomejs/biome": "^1.9.4",
-    "@types/node": "^22.7.7",
-    "luxon": "^3.5.0",
-    "markdown-it-anchor": "^9.2.0",
-    "markdown-it-toc-done-right": "^4.2.0",
-    "npm-run-all": "^4.1.5",
-    "prismjs": "^1.29.0",
-    "rimraf": "^6.0.1",
-    "typescript": "^5.6.3"
+    "@types/mdast": "^4.0.4",
+    "mdast": "^3.0.0",
+    "unified": "^11.0.5"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@biomejs/biome",
+      "esbuild",
+      "sharp"
+    ],
+    "ignoredBuiltDependencies": [
+      "@biomejs/biome"
+    ]
   }
 }

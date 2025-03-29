@@ -1,0 +1,50 @@
+---
+
+---
+
+<style>
+  #scroll-container {
+    height: 0.3em;
+    width: 100vw;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+
+  #scroll-indicator {
+    height: 100%;
+    display: block;
+    background-color: var(--secondary-color);
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const indicator = document.getElementById(
+      "scroll-indicator"
+    ) as HTMLDivElement;
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        const scrollPercent =
+          window.scrollY / (document.body.offsetHeight - window.innerHeight);
+
+        indicator.style.width = `${scrollPercent * 100}%`;
+      },
+      { passive: true }
+    );
+  });
+</script>
+
+{
+  /*
+  Using a <progress> would be nice, but for some reason in the year 2025 we
+  *still* have no standard cross-browser way to style the damn bar
+  Why???
+*/
+}
+<div aria-hidden="true" id="scroll-container">
+  <div id="scroll-indicator" style="width: 0%"></div>
+</div>

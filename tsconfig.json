@@ -1,43 +1,14 @@
 {
-  "include": ["src"],
-  "exclude": ["**/node_modules", "**/.*/", "**/*.js", "**/*.d.ts"],
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"],
   "compilerOptions": {
-    /* Projects */
-    "composite": true,
-    "rootDir": "./src",
-    "outDir": "./src",
-    "tsBuildInfoFile": ".tsbuildinfo",
-
-    /* Language and Environment */
-    "target": "ESNext",
-    "lib": ["ESNext"],
-    "types": ["node"],
-
-    /* Modules */
-    "module": "Node16",
-    "moduleResolution": "Node16",
-
-    /* Emit */
-    "sourceMap": true,
-    "declaration": true,
-    "declarationMap": true,
-
-    /* Interop Constraints */
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-
-    /* Type Checking */
-    "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    // "noUncheckedIndexedAccess": true,
-    "noImplicitOverride": true,
-    "exactOptionalPropertyTypes": true,
-
-    /* Completeness */
-    "skipDefaultLibCheck": true,
-    "skipLibCheck": true,
-    "inlineSources": true,
+    "baseUrl": ".",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@images/*": ["src/images/*"],
+      "@layouts/*": ["src/layouts/*"]
+    },
+    "strictNullChecks": true
   }
 }

@@ -1,0 +1,24 @@
+---
+import type { GetStaticPaths } from "astro";
+import { getCollection } from "astro:content";
+import PaginatedBlogPosts from "@layouts/PaginatedBlogPosts.astro";
+import { sortByPubDate } from "src/utils/sorts";
+
+export const getStaticPaths = (async ({ paginate }) => {
+  const posts = await getCollection("blog").then((c) => c.sort(sortByPubDate));
+  return paginate(posts, { pageSize: 10 });
+}) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+const { total } = page;
+---
+
+<PaginatedBlogPosts
+  title="All Posts"
+  subtitle={`${total} post${total === 1 ? "" : "s"}`}
+  page={page}
+>
+  <p slot="headerTail">
+    <a href="/blog/tags/">See all tags</a>
+  </p>
+</PaginatedBlogPosts>

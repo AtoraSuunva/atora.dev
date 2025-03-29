@@ -1,0 +1,35 @@
+---
+import type { MarkdownLayoutProps } from "astro";
+import BaseLayout from "./BaseLayout.astro";
+
+type BaseLayoutProps = Parameters<typeof BaseLayout>[0];
+
+type PageProps = BaseLayoutProps & {
+  subtitle?: string;
+};
+
+type MDProps = MarkdownLayoutProps<PageProps>;
+
+type Props = PageProps | MDProps;
+
+const { title, subtitle, description, image, keywords } =
+  (Astro.props as MDProps).frontmatter ?? Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={image}
+  keywords={keywords}
+>
+  <Fragment slot="header">
+    <h1 class="title">
+      {title}
+      {subtitle && <small>{subtitle}</small>}
+    </h1>
+    {description && <p class="description">{description}</p>}
+    <slot name="headerTail" />
+  </Fragment>
+
+  <slot />
+</BaseLayout>

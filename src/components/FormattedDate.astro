@@ -1,0 +1,41 @@
+---
+interface Props {
+  date: Date;
+}
+
+const { date } = Astro.props;
+
+const dateFormat: Intl.DateTimeFormatOptions = {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
+---
+
+<script>
+  // Re-format time into the browser's locale
+  document.addEventListener("DOMContentLoaded", () => {
+    const timeElements = document.getElementsByClassName("formatted-date");
+
+    for (const te of timeElements) {
+      const datetime = te.getAttribute("datetime");
+      if (!datetime) continue;
+
+      const date = new Date(datetime);
+      // TODO: some way to pass the dateFormat to the script
+      // passing via script attribute works but causes the script to be an inline script and lose
+      // the pre-processing benefits
+      // attaching it to each <time> is possible but duplicates data
+      // maybe a single inline global script that adds to window?
+      te.textContent = date.toLocaleDateString(undefined, {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+    }
+  });
+</script>
+
+<time class="formatted-date" datetime={date.toISOString()}>
+  {date.toLocaleDateString("en-ca", dateFormat)}
+</time>

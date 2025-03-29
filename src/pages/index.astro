@@ -1,0 +1,147 @@
+---
+import { Picture } from "astro:assets";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import siggyBleppy from "@images/siggy-bleppy.png";
+import feather from "@images/feather.png";
+import Card from "@components/Card.astro";
+import { getCollection } from "astro:content";
+import { sortByPubDate } from "src/utils/sorts";
+
+const posts = await getCollection("blog").then((c) => c.sort(sortByPubDate));
+---
+
+<style>
+  .center-piece {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0 auto;
+    justify-content: space-between;
+    max-width: 1100px;
+  }
+
+  .center-piece > div:first-child {
+    margin-right: 2em;
+  }
+
+  .center-piece .me-irl img {
+    height: 256px;
+    width: 256px;
+    object-fit: contain;
+    border-radius: var(--border-radius);
+  }
+
+  @media screen and (max-width: 768px) {
+    .center-piece {
+      padding-top: 1.5em;
+      flex-direction: column-reverse;
+    }
+
+    .center-piece > div:first-child {
+      margin-right: 0;
+    }
+
+    .center-piece .me-irl img {
+      height: 128px;
+      width: 128px;
+    }
+  }
+</style>
+
+<BaseLayout title="Home">
+  <div class="center-piece" slot="header">
+    <div>
+      <h1>
+        Atora Suunva <small>(they/he)</small>
+      </h1>
+      <p>
+        Heya, I'm Atora Suunva, software developer and person on the internet.
+      </p>
+      <p>
+        I've been writing code for 10+ years, which was first my hobby, then
+        education, then job.
+      </p>
+      <p>
+        While I do love programming, I also do things like play games or go
+        outside or go for long walks on the beach unironically.
+      </p>
+      <p>
+        This site is a showcase of things I've done along with a place for me to
+        post things.
+      </p>
+      <p>
+        Scroll down to see some of my <a href="/blog/">posts</a> and <a
+          href="/projects">projects</a
+        >, or read more <a href="/about">about me</a> or how to <a
+          href="/contact">contact me</a
+        >.
+      </p>
+      <p>
+        <a href="https://twitter.com/siggymcc/status/1566071435461738496"
+          >Avatar Source (Twitter/siggymc)</a
+        >
+      </p>
+    </div>
+    <div class="me-irl">
+      <a href="https://twitter.com/siggymcc/status/1566071435461738496">
+        <Picture
+          src={siggyBleppy}
+          formats={["avif", "webp"]}
+          alt="Atora Suunva"
+          loading="eager"
+        />
+      </a>
+    </div>
+  </div>
+
+  <section>
+    <h2>Recent Posts</h2>
+    {
+      posts.slice(0, 3).map((post) => (
+        <Card
+          title={post.data.title}
+          date={post.data.pubDate}
+          description={post.data.description}
+          link={`/blog/${post.id}`}
+          tags={post.data.tags}
+          linkText="Continue Reading"
+          image={
+            post.data.heroImage
+              ? {
+                  src: import(/* @vite-ignore */ post.data.heroImage),
+                  alt: post.data.heroAlt ?? null,
+                }
+              : undefined
+          }
+        />
+      ))
+    }
+  </section>
+  <section>
+    <h2>Recent Projects</h2>
+    <Card
+      title="This site!"
+      description="I wrote all of this from scratch myself"
+      link="/"
+      linkText="You're already on it!"
+      icon={{
+        src: feather,
+        alt: "A green, beige, and purple feather",
+      }}
+    />
+
+    <Card
+      title="Booru"
+      description="booru is a Node.js package to easily interface with the APIs of several boorus"
+      link="https://github.com/AtoraSuunva/booru"
+      linkText="View on GitHub"
+    />
+
+    <Card
+      title="Bots"
+      description="Mostly utility and moderation tools for Discord, with some 'fun' commands thrown in too."
+      link="/bots"
+      linkText="View bots"
+    />
+  </section>
+</BaseLayout>

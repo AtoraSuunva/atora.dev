@@ -1,0 +1,53 @@
+---
+import childProcess from "child_process";
+import { fileURLToPath } from "url";
+
+const today = new Date();
+
+const commitSHA = childProcess
+  .execSync("git rev-parse --short HEAD")
+  .toString()
+  .trim();
+
+const commitBranch = childProcess
+  .execSync("git rev-parse --abbrev-ref HEAD")
+  .toString()
+  .trim();
+
+const inputFile = fileURLToPath(import.meta.url);
+
+const lastModified = childProcess
+  .execSync(`git log -1 --pretty="format:%cI" "${inputFile}"`)
+  .toString()
+  .trim();
+
+const cwd = process.cwd();
+const sourcePath = inputFile.substring(cwd.length);
+const commitURL = `https://github.com/AtoraSuunva/atora.dev/blob/${commitSHA}${sourcePath}`;
+---
+
+<style>
+  footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.85em;
+    color: var(--nav-font);
+    background-color: var(--nav-background);
+    padding: 0.5em 0;
+    box-shadow: var(--box-shadow-raised);
+  }
+
+  footer p {
+    margin: 0.5em 0 0 0;
+  }
+</style>
+
+<footer class="dark-stripes">
+  <p class="muted">Last Modified: {lastModified || "uncommitted"}</p>
+  <p>
+    <a href={commitURL}>{commitBranch}/{commitSHA.slice(0, 7)}</a> • {
+      today.getFullYear()
+    } Atora Suunva
+  </p>
+</footer>

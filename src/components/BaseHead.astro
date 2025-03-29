@@ -1,0 +1,93 @@
+---
+import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+// Supports weights 200-900
+import "@fontsource-variable/source-code-pro";
+// Supports weights 100-900
+import "@fontsource-variable/roboto";
+import inter from "@fontsource-variable/roboto/files/roboto-latin-standard-normal.woff2?url";
+
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  keywords?: string[];
+}
+
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  image = "@images/feather.png",
+  keywords = [],
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const imageURL = new URL(image, Astro.url);
+---
+
+<!-- Global Metadata -->
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="icon" href="/resources/favicon/favicon.ico" />
+<link rel="sitemap" href="/sitemap-index.xml" />
+<link
+  rel="alternate"
+  type="application/rss+xml"
+  title={SITE_TITLE}
+  href={new URL("rss.xml", Astro.site)}
+/>
+<meta name="generator" content={Astro.generator} />
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalURL} />
+
+<!-- Primary Meta Tags -->
+<title>{title} - {SITE_TITLE}</title>
+<meta name="title" content={title} />
+<meta name="description" content={description} />
+<meta name="keywords" content={keywords.join(", ")} />
+<meta name="theme-color" content="#88927B" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content={Astro.url} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={imageURL} />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content={Astro.url} />
+<meta property="twitter:title" content={title} />
+<meta property="twitter:description" content={description} />
+<meta property="twitter:image" content={imageURL} />
+<meta property="twitter:creator" content="@AtoraSuunva" />
+
+<!-- Favicons -->
+<link
+  rel="apple-touch-icon"
+  sizes="180x180"
+  href="/resources/favicon/apple-touch-icon.png"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="32x32"
+  href="/resources/favicon/favicon-32x32.png"
+/>
+<link
+  rel="icon"
+  type="image/png"
+  sizes="16x16"
+  href="/resources/favicon/favicon-16x16.png"
+/>
+<link rel="manifest" href="/resources/favicon/site.webmanifest" />
+
+<!-- Preload -->
+<link
+  rel="preload"
+  as="font"
+  type="font/woff2"
+  href={inter}
+  crossorigin="anonymous"
+/>

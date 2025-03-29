@@ -1,0 +1,199 @@
+---
+import { Image } from "astro:assets";
+import feather from "@images/feather.png";
+
+const page = Astro.url;
+
+function active(name: string, strict = false) {
+  if (
+    (strict && page.pathname === name) ||
+    (!strict && page.pathname.startsWith(name))
+  ) {
+    return { class: "active", "aria-current": "page" as const };
+  }
+
+  return {}; // return an empty object for non-active states
+}
+---
+
+<style>
+  nav.main-nav {
+    display: flex;
+    align-items: center;
+    background-color: var(--nav-background);
+    padding: 0 1em;
+    box-shadow: var(--box-shadow-raised);
+  }
+
+  nav.main-nav .nav-icon {
+    width: 32px;
+    height: 32px;
+  }
+
+  nav.main-nav .nav-icon img {
+    width: 100%;
+    height: 100%;
+  }
+
+  nav.main-nav ul {
+    display: flex;
+    margin: 0;
+    padding: 0 0 0 1em;
+  }
+
+  nav.main-nav ul li {
+    list-style: none;
+    display: flex;
+    margin: 0 0.5em 0 0;
+    transition: background-color 0.15s ease-in-out;
+  }
+
+  nav.main-nav ul li.active,
+  nav.main-nav ul li:hover {
+    background-color: var(--nav-background-active);
+  }
+
+  nav.main-nav ul li a {
+    color: var(--nav-font);
+    padding: 0.7em;
+    text-decoration: none;
+  }
+
+  .hamburger-icon {
+    border: 1px solid #fff;
+    width: 14px;
+    height: 0;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .hamburger-icon::before {
+    border: 1px solid #fff;
+    transform: translate(-1px, -7px);
+    width: 14px;
+    display: block;
+    content: "";
+    transition: all 0.3s ease-in-out;
+  }
+
+  .hamburger-icon::after {
+    border: 1px solid #fff;
+    transform: translate(-1px, 3px);
+    width: 14px;
+    display: block;
+    content: "";
+    transition: all 0.3s ease-in-out;
+  }
+
+  #nav-toggle,
+  label[for="nav-toggle"] {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    nav.main-nav {
+      padding: 0.5em;
+      flex-direction: column;
+      align-items: baseline;
+    }
+
+    nav.main-nav .nav-header {
+      display: flex;
+      width: 100%;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    nav.main-nav ul {
+      padding: 1em 0;
+      flex-direction: column;
+      position: absolute;
+      width: 100%;
+      left: calc(-100vw);
+      top: 48px;
+      background-color: var(--nav-background);
+      z-index: 99;
+      filter: drop-shadow(0 10px 4px #00000066);
+      transition: left 0.3s ease-in-out;
+    }
+
+    nav.main-nav #nav-toggle:checked ~ ul {
+      left: 0;
+    }
+
+    nav.main-nav ul li {
+      margin: 0.5em 1.25em;
+      background-color: var(--main-background);
+      border-radius: var(--border-radius);
+    }
+
+    nav.main-nav ul li a {
+      width: 100%;
+      display: block;
+      text-align: center;
+    }
+
+    nav.main-nav #nav-toggle:checked ~ label .hamburger-icon {
+      border: 1px solid transparent;
+    }
+
+    nav.main-nav #nav-toggle:checked ~ label .hamburger-icon:before {
+      transform: translate(-3px, -1px) rotate(45deg);
+      width: 18px;
+    }
+
+    nav.main-nav #nav-toggle:checked ~ label .hamburger-icon:after {
+      transform: translate(-3px, -3px) rotate(-45deg);
+      width: 18px;
+    }
+
+    label[for="nav-toggle"] {
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      width: 32px;
+      height: 32px;
+      background-color: var(--tertiary-color);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 8px;
+      border-radius: var(--border-radius);
+    }
+  }
+</style>
+
+<nav class="main-nav">
+  <a class="nav-icon" href="/" aria-hidden="true">
+    <Image
+      src={feather}
+      alt="Feather icon"
+      height="32"
+      width="32"
+      loading="eager"
+    />
+  </a>
+  <input type="checkbox" id="nav-toggle" name="nav-toggle" aria-hidden="true" />
+  <label class="nav-icon" for="nav-toggle" aria-hidden="true">
+    <div class="hamburger-icon"></div>
+  </label>
+  <ul aria-label="Site Sections">
+    <li {...active("/", true)}>
+      <a href="/">Home</a>
+    </li>
+    <li {...active("/projects")}>
+      <a href="/projects">Projects</a>
+    </li>
+    <li {...active("/blog/")}>
+      <a href="/blog/">Blog</a>
+    </li>
+    <li {...active("/bots")}>
+      <a href="/bots">Bots</a>
+    </li>
+    <li {...active("/about")}>
+      <a href="/about">About</a>
+    </li>
+    <li {...active("/contact")}>
+      <a href="/contact">Contact</a>
+    </li>
+  </ul>
+</nav>

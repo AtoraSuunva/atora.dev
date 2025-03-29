@@ -1,0 +1,55 @@
+---
+import Card from "@components/Card.astro";
+import Pagination from "@components/Pagination.astro";
+import PageLayout from "./PageLayout.astro";
+import type { CollectionEntry } from "astro:content";
+import type { Page } from "astro";
+
+type Props = {
+  page: Page<CollectionEntry<"blog">>;
+  title: string;
+  subtitle?: string;
+};
+
+const { page, title, subtitle } = Astro.props;
+---
+
+<style>
+  h2 small {
+    font-size: 0.8em;
+    color: var(--muted-font);
+    margin-left: 0.5em;
+  }
+</style>
+
+<PageLayout title={title} subtitle={subtitle}>
+  <slot name="headerTail" slot="headerTail" />
+
+  <h2>
+    Page {page.currentPage}/{page.lastPage}
+    <small>({page.start + 1}—{page.end + 1} of {page.total})</small>
+  </h2>
+
+  <Pagination page={page} />
+
+  {
+    page.data.map((post) => (
+      <Card
+        title={post.data.title}
+        date={post.data.pubDate}
+        description={post.data.description}
+        link={`/blog/${post.id}`}
+        tags={post.data.tags}
+        linkText="Continue Reading"
+        image={
+          post.data.heroImage
+            ? {
+                src: import(/* @vite-ignore */ post.data.heroImage),
+                alt: post.data.heroAlt ?? null,
+              }
+            : undefined
+        }
+      />
+    ))
+  }
+</PageLayout>

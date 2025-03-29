@@ -1,0 +1,49 @@
+---
+import Tag from "./Tag.astro";
+
+interface Props {
+  tags: string[];
+  showMax?: number;
+}
+
+const { tags, showMax = 99 } = Astro.props;
+---
+
+<style>
+  .post-tags {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5em;
+    list-style: none;
+    padding: 0;
+    line-height: 2em;
+    margin: 0.25em 0;
+  }
+
+  .post-tags > li {
+    margin: 0;
+    padding: 0;
+  }
+
+  .post-tags .info {
+    color: var(--muted-font);
+  }
+</style>
+
+<ul class="post-tags">
+  {
+    tags.slice(0, showMax).map((tag) => (
+      <li>
+        <Tag tag={tag} tagUrl={`/blog/tags/${tag}/`} />
+      </li>
+    ))
+  }
+  {
+    tags.length > showMax && (
+      <li>
+        <span class="info">+{tags.length - showMax} more</span>
+      </li>
+    )
+  }
+</ul>

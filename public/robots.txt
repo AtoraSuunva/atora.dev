@@ -1,4 +1,4 @@
-Sitemap: https://atora.dev/sitemap.xml
+Sitemap: https://atora.dev/sitemap-index.xml
 
 User-agent: *
 Disallow:

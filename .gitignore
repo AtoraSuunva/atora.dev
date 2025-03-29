@@ -1,29 +1,26 @@
-# compiled output
-/src/**/*.js
-/src/**/*.d.ts
-/src/**/*.d.ts.map
-/src/**/*.js.map
-/_site
-.tsbuildinfo
+# build output
+dist/
+# generated types
+.astro/
 
-/node_modules
+# dependencies
+node_modules/
 
-# Logs
-logs
-*.log
+# logs
 npm-debug.log*
-pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-lerna-debug.log*
+pnpm-debug.log*
 
-# OS
+
+# environment variables
+.env
+.env.production
+
+# macOS-specific files
 .DS_Store
 
-# IDE - VSCode
-.vscode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+# jetbrains setting folder
+.idea/
+
+.vscode/

@@ -1,5 +1,0 @@
-{
-  "permalink": "/blog/{{ page.fileSlug }}/",
-  "tags": ["posts"],
-  "layout": "templates/post.njk"
-}

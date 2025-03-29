@@ -1,0 +1,170 @@
+---
+import type { Page } from "astro";
+
+type Props = {
+  page: Page;
+  showFirst?: number;
+  showSurrounding?: number;
+  showLast?: number;
+};
+
+const { page, showFirst = 2, showSurrounding = 2, showLast = 2 } = Astro.props;
+
+const shownPages = new Set<number>();
+
+for (let i = 1; i <= showFirst; i++) {
+  if (i <= page.lastPage) {
+    shownPages.add(i);
+  }
+}
+
+for (
+  let i = page.currentPage - showSurrounding;
+  i <= page.currentPage + showSurrounding;
+  i++
+) {
+  if (i > 0 && i <= page.lastPage) {
+    shownPages.add(i);
+  }
+}
+
+for (let i = page.lastPage - showLast; i < page.lastPage + 1; i++) {
+  if (i > 0 && i <= page.lastPage) {
+    shownPages.add(i);
+  }
+}
+---
+
+<style>
+  .pagination {
+    display: flex;
+    justify-content: center;
+    margin: 1em;
+    padding: 0;
+    list-style: none;
+  }
+
+  .pagination li {
+    display: flex;
+    margin: 0 0.5em;
+    color: var(--muted-font);
+    background-color: var(--background-darken);
+    border-radius: var(--border-radius);
+    min-width: 3em;
+    text-align: center;
+    cursor: not-allowed;
+    box-shadow: var(--box-shadow-raised);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .pagination li * {
+    padding: 0.3em 1.5em;
+    text-decoration: none;
+  }
+
+  .pagination li.page {
+    min-width: 2em;
+  }
+
+  .pagination li:has(a) {
+    cursor: pointer;
+    background-color: var(--tertiary-color);
+  }
+
+  .pagination li:has(a):hover {
+    background-color: var(--active-tertiary-color);
+    box-shadow: var(--box-shadow-raised);
+  }
+
+  .pagination li a {
+    color: var(--main-font);
+  }
+</style>
+
+{/* First  Previous  1 2 ... 3 4 5 ... 8 9  Next Last*/}
+<nav aria-labelledby="pagination-title">
+  <h2 id="pagination-title" class="sr-only">Pages</h2>
+  <ol class="pagination">
+    {
+      page.url.first ? (
+        <li>
+          <a href={page.url.first}>
+            First<span class="sr-only"> Page</span>
+          </a>
+        </li>
+      ) : (
+        <li>
+          <span>
+            First<span class="sr-only"> Page</span>
+          </span>
+        </li>
+      )
+    }
+    {
+      page.url.prev ? (
+        <li>
+          <a href={page.url.prev}>
+            Prev<span class="sr-only">ious Page</span>
+          </a>
+        </li>
+      ) : (
+        <li>
+          <span>
+            Prev<span class="sr-only">ious Page</span>
+          </span>
+        </li>
+      )
+    }
+    {
+      Array.from(shownPages).map((pageNumber) => (
+        <li
+          class="page"
+          aria-current={pageNumber === page.currentPage ? "page" : undefined}
+        >
+          {pageNumber === page.currentPage ? (
+            <span>
+              <span class="sr-only">Page</span> {pageNumber}
+            </span>
+          ) : (
+            <a
+              href={`${page.url.first ?? page.url.current}${pageNumber > 1 ? `/${pageNumber}` : ""}`}
+            >
+              <span class="sr-only">Page</span>
+              {pageNumber}
+            </a>
+          )}
+        </li>
+      ))
+    }
+    {
+      page.url.next ? (
+        <li>
+          <a href={page.url.next}>
+            Next<span class="sr-only"> Page</span>
+          </a>
+        </li>
+      ) : (
+        <li>
+          <span>
+            Next<span class="sr-only"> Page</span>
+          </span>
+        </li>
+      )
+    }
+    {
+      page.url.last ? (
+        <li>
+          <a href={page.url.last}>
+            Last<span class="sr-only"> Page</span>
+          </a>
+        </li>
+      ) : (
+        <li>
+          <span>
+            Last<span class="sr-only"> Page</span>
+          </span>
+        </li>
+      )
+    }
+  </ol>
+</nav>

@@ -1,0 +1,84 @@
+---
+import type { CollectionEntry } from "astro:content";
+import FormattedDate from "@components/FormattedDate.astro";
+import BaseLayout from "./BaseLayout.astro";
+import TagList from "@components/TagList.astro";
+import type { MarkdownHeading } from "astro";
+import { Image } from "astro:assets";
+import TableOfContents from "@components/TableOfContents.astro";
+import ScrollIndicator from "@components/ScrollIndicator.astro";
+
+type Props = CollectionEntry<"blog">["data"] & {
+  headings: MarkdownHeading[];
+  minutesRead?: string;
+  words?: number;
+};
+
+const {
+  title,
+  description,
+  pubDate,
+  // updatedDate,
+  heroImage,
+  heroAlt = "",
+  tags = [],
+  headings = [],
+  minutesRead,
+  words,
+} = Astro.props;
+
+const importedHero =
+  heroImage &&
+  (import(/* @vite-ignore */ heroImage) as Promise<{ default: ImageMetadata }>);
+---
+
+<style>
+  .post-metadata {
+    padding: 0.5em 0;
+    line-height: 1.5em;
+  }
+
+  .post-metadata p {
+    margin: 0.5em 0;
+  }
+
+  section {
+    padding: 1em 0;
+  }
+</style>
+
+<BaseLayout title={title}>
+  <Fragment slot="header">
+    <h1 class="title">
+      {title}
+      <small><FormattedDate date={pubDate} /></small>
+      <!-- <small>{{ subtitle }}</small> -->
+    </h1>
+    <p class="description">{description}</p>
+    <div class="post-metadata">
+      <p>
+        {minutesRead} ({words} words)
+      </p>
+      {
+        tags.length > 0 && (
+          <p>
+            <TagList tags={tags} />
+          </p>
+        )
+      }
+    </div>
+    <ScrollIndicator />
+  </Fragment>
+
+  <section>
+    {
+      importedHero && (
+        <Image src={importedHero} alt={heroAlt} class="hero-image" />
+      )
+    }
+    <TableOfContents headings={headings} />
+    <article class="post">
+      <slot />
+    </article>
+  </section>
+</BaseLayout>

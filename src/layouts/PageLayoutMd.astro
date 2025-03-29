@@ -1,0 +1,33 @@
+---
+import type { MarkdownLayoutProps } from "astro";
+import BaseLayout from "./BaseLayout.astro";
+
+type BaseLayoutProps = Parameters<typeof BaseLayout>[0];
+
+type Props = MarkdownLayoutProps<
+  BaseLayoutProps & {
+    subtitle: string;
+  }
+>;
+
+const { frontmatter } = Astro.props;
+const { title, subtitle, description, image, keywords } = frontmatter;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  image={image}
+  keywords={keywords}
+>
+  <Fragment slot="header">
+    <h1 class="title">
+      {title}
+      <small>{subtitle}</small>
+    </h1>
+    {description && <p class="description">{description}</p>}
+    <slot name="headerTail" />
+  </Fragment>
+
+  <slot />
+</BaseLayout>

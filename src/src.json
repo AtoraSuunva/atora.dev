@@ -1,5 +1,0 @@
-{
-  "permalink": "/{{ page.fileSlug }}.html",
-  "date": "git Last Modified",
-  "layout": "templates/page.njk"
-}
