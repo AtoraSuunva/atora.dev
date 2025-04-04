@@ -59,13 +59,7 @@ const importedHero =
       <p>
         {minutesRead} ({words} words)
       </p>
-      {
-        tags.length > 0 && (
-          <p>
-            <TagList tags={tags} />
-          </p>
-        )
-      }
+      {tags.length > 0 && <TagList tags={tags} />}
     </div>
     <ScrollIndicator />
   </Fragment>
