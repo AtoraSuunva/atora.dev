@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import rehypeSlug from 'rehype-slug';
@@ -40,5 +40,18 @@ export default defineConfig({
     responsiveImages: true,
     contentIntellisense: true,
     preserveScriptOrder: true,
+    fonts: [{
+      provider: fontProviders.fontsource(),
+      name: 'Roboto',
+      cssVariable: '--font-roboto',
+      fallbacks: ['sans-serif'],
+      weights: ['200 900'],
+    }, {
+      provider: fontProviders.fontsource(),
+      name: 'Source Code Pro',
+      cssVariable: '--font-source-code-pro',
+      fallbacks: ['monospace'],
+      weights: ['100 900'],
+    }]
   },
 });

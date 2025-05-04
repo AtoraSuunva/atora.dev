@@ -27,7 +27,7 @@
 
 	--border-radius: 8px;
 
-	--primary-font: 'Roboto Variable', sans-serif;
+	--primary-font: var(--font-roboto);
 
 	--tablet-breakpoint: 768px;
 	--desktop-breakpoint: 1024px;
@@ -129,7 +129,7 @@ table tbody tr:hover {
 }
 
 code {
-	font-family: 'Source Code Pro Variable', monospace;
+	font-family: var(--font-source-code-pro);
 }
 
 .astro-code {

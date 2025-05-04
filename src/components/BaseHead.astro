@@ -1,10 +1,6 @@
 ---
+import { Font } from "astro:assets";
 import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
-// Supports weights 200-900
-import "@fontsource-variable/source-code-pro";
-// Supports weights 100-900
-import "@fontsource-variable/roboto";
-import inter from "@fontsource-variable/roboto/files/roboto-latin-standard-normal.woff2?url";
 
 interface Props {
   title: string;
@@ -83,11 +79,6 @@ const imageURL = new URL(image, Astro.url);
 />
 <link rel="manifest" href="/favicon/site.webmanifest" />
 
-{/* Preload */}
-<link
-  rel="preload"
-  as="font"
-  type="font/woff2"
-  href={inter}
-  crossorigin="anonymous"
-/>
+{/* Fonts */}
+<Font cssVariable="--font-roboto" preload />
+<Font cssVariable="--font-source-code-pro" />
