@@ -52,11 +52,12 @@ const imageURL = new URL(image, Astro.url);
 <meta property="og:image" content={imageURL} />
 
 {/* Twitter */}
-<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:card" content="summary" />
 <meta property="twitter:url" content={Astro.url} />
-<meta property="twitter:title" content={title} />
-<meta property="twitter:description" content={description} />
+<meta property="twitter:title" content={title.substring(0, 70)} />
+<meta property="twitter:description" content={description.substring(0, 2000)} />
 <meta property="twitter:image" content={imageURL} />
+<meta property="twitter:site" content="@AtoraSuunva" />
 <meta property="twitter:creator" content="@AtoraSuunva" />
 
 {/* Favicons */}
