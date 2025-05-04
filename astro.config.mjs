@@ -34,7 +34,7 @@ export default defineConfig({
     remarkPlugins: [remarkReadingTime],
   },
   image: {
-    experimentalLayout: 'responsive',
+    experimentalLayout: 'full-width',
   },
   experimental: {
     responsiveImages: true,
