@@ -97,24 +97,27 @@ const posts = await getCollection("blog").then((c) => c.sort(sortByPubDate));
   <section>
     <h2>Recent Posts</h2>
     {
-      posts.slice(0, 3).map((post) => (
-        <Card
-          title={post.data.title}
-          date={post.data.pubDate}
-          description={post.data.description}
-          link={`/blog/${post.id}`}
-          tags={post.data.tags}
-          linkText="Continue Reading"
-          image={
-            post.data.heroImage
-              ? {
-                  src: import(/* @vite-ignore */ post.data.heroImage),
-                  alt: post.data.heroAlt ?? null,
-                }
-              : undefined
-          }
-        />
-      ))
+      posts
+        .filter((p) => !p.data.draft)
+        .slice(0, 3)
+        .map((post) => (
+          <Card
+            title={post.data.title}
+            date={post.data.pubDate}
+            description={post.data.description}
+            link={`/blog/${post.id}`}
+            tags={post.data.tags}
+            linkText="Continue Reading"
+            image={
+              post.data.heroImage
+                ? {
+                    src: import(/* @vite-ignore */ post.data.heroImage),
+                    alt: post.data.heroAlt ?? null,
+                  }
+                : undefined
+            }
+          />
+        ))
     }
   </section>
   <section>

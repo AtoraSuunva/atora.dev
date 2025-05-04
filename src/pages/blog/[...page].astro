@@ -5,7 +5,9 @@ import PaginatedBlogPosts from "@layouts/PaginatedBlogPosts.astro";
 import { sortByPubDate } from "src/utils/sorts";
 
 export const getStaticPaths = (async ({ paginate }) => {
-  const posts = await getCollection("blog").then((c) => c.sort(sortByPubDate));
+  const posts = await getCollection("blog").then((c) =>
+    c.filter((c) => !c.data.draft).sort(sortByPubDate)
+  );
   return paginate(posts, { pageSize: 10 });
 }) satisfies GetStaticPaths;
 

@@ -120,7 +120,9 @@ if (formattedHeadings.length > 0) {
 </style>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+  import { onDOMLoaded } from "@utils/onDOMLoaded";
+
+  onDOMLoaded(() => {
     const article = document.querySelector("article");
     if (!article) return;
 

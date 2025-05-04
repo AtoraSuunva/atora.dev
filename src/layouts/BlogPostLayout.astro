@@ -33,6 +33,10 @@ const importedHero =
 ---
 
 <style>
+  .post > :global(p) {
+    line-height: 1.75em;
+  }
+
   .post-metadata {
     padding: 0.5em 0;
     line-height: 1.5em;
@@ -57,7 +61,7 @@ const importedHero =
     <p class="description">{description}</p>
     <div class="post-metadata">
       <p>
-        {minutesRead} ({words} words)
+        {minutesRead} ({words?.toLocaleString()} words)
       </p>
       {tags.length > 0 && <TagList tags={tags} />}
     </div>

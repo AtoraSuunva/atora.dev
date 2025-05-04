@@ -21,7 +21,9 @@
 </style>
 
 <script>
-  document.addEventListener("DOMContentLoaded", () => {
+  import { onDOMLoaded } from "@utils/onDOMLoaded";
+
+  onDOMLoaded(() => {
     const indicator = document.getElementById(
       "scroll-indicator"
     ) as HTMLDivElement;

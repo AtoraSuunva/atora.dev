@@ -11,38 +11,38 @@ const { tag, tagUrl } = Astro.props;
   .tag {
     display: flex;
     align-items: center;
-    background-color: var(--background-darken);
-    border: 2px solid var(--tertiary-color);
+    gap: 0.3em;
+    padding-inline-start: 0.3em;
+    padding-inline-end: 0.6em;
+    margin: 0;
+    background-color: var(--tertiary-color);
     border-radius: 100em;
     color: var(--main-font);
     text-decoration: none;
     height: 100%;
     width: 100%;
-    margin: 0;
-    padding: 0 0.5em;
-    transition: all 0.3s ease-in-out;
+    transition: all .3s ease-in-out;
   }
 
   .tag:before {
     content: "#";
-    background-color: var(--tertiary-color);
+    background-color: var(--primary-color);
     border-radius: 100%;
-    margin-right: 0.4em;
-    height: 16px;
-    width: 16px;
-    line-height: 1em;
+    height: 1.5em;
+    width: 1.5em;
+    line-height: 1.5em;
     text-align: center;
-    transition: all 0.3s ease-in-out;
+    transition: all .3s ease-in-out;
   }
 
   .tag:hover,
   .tag:focus {
-    border-color: var(--active-tertiary-color);
+    background-color: var(--active-tertiary-color);
   }
 
   .tag:hover:before,
   .tag:focus:before {
-    background-color: var(--active-tertiary-color);
+    background-color: var(--active-primary-color);
   }
 </style>
 

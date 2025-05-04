@@ -1,0 +1,50 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import BlogPostLayout from "@layouts/BlogPostLayout.astro";
+import { render } from "astro:content";
+import * as draftWarning from "./_draftWarning.md";
+
+// TODO: see if this can be deduped (../[...slug].astro)
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: post,
+  }));
+}
+type Props = CollectionEntry<"blog">;
+
+const post = Astro.props;
+const { Content, headings, remarkPluginFrontmatter } = await render(post);
+const { minutesRead, words } = remarkPluginFrontmatter;
+---
+
+{
+  post.data.draft ? (
+    <BlogPostLayout
+      {...post.data}
+      headings={headings}
+      minutesRead={minutesRead}
+      words={words}
+    >
+      <draftWarning.Content />
+      <Content />
+    </BlogPostLayout>
+  ) : (
+    <html>
+      <head>
+        <title>Redirecting to: /blog/{post.id}</title>
+        <meta http-equiv="refresh" content={`0;url=/blog/${post.id}`} />
+        <meta name="robots" content="noindex" />
+        <link rel="canonical" href={`https://atora.dev/blog/${post.id}`} />
+      </head>
+      <body>
+        <a href={`/blog/${post.id}`}>
+          Redirecting from <code>/blog/draft/{post.id}/</code> to{" "}
+          <code>/blog/{post.id}</code>
+        </a>
+      </body>
+    </html>
+  )
+}

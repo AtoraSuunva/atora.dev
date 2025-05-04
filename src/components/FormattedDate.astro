@@ -16,7 +16,9 @@ const dateFormat: Intl.DateTimeFormatOptions = {
 
 <script>
   // Re-format time into the browser's locale
-  document.addEventListener("DOMContentLoaded", () => {
+  import { onDOMLoaded } from "@utils/onDOMLoaded.js";
+
+  onDOMLoaded(() => {
     const timeElements =
       document.querySelectorAll<HTMLElement>(".formatted-date");
 
