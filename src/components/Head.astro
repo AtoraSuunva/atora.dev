@@ -1,6 +1,9 @@
 ---
 import { Font } from "astro:assets";
-import { SITE_DESCRIPTION, SITE_TITLE, SITE_TITLE_TEMPLATE } from "../consts";
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_TITLE_TEMPLATE, SITE_COLOR } from "../consts";
+import { getImage } from "astro:assets";
+import FeatherSVG from "@images/feather.svg";
+import FeatherPNG from "@images/feather.png";
 
 interface Props {
   title: string;
@@ -19,12 +22,48 @@ const {
   description = SITE_DESCRIPTION,
   image = "/images/feather.png",
   keywords = [],
-  themeColor = "#88927B",
+  themeColor = SITE_COLOR,
 } = Astro.props;
 
 const titleTag = titleTemplate.replace(/%s/g, title);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const imageURL = new URL(image, Astro.url);
+
+const faviconSvg = await getImage({
+  src: FeatherSVG,
+  format: "svg",
+});
+
+interface FaviconIcon {
+  format: string;
+  height?: number;
+  width?: number;
+}
+
+function faviconIcon({ format, height, width }: FaviconIcon) {
+  return getImage({
+    src: FeatherPNG,
+    format,
+    height,
+    width,
+  });
+}
+
+const favicon32x32 = await faviconIcon({
+  format: "png",
+  height: 32,
+  width: 32,
+});
+const favicon16x16 = await faviconIcon({
+  format: "png",
+  height: 16,
+  width: 16,
+});
+const appleTouchIcon = await faviconIcon({
+  format: "png",
+  height: 180,
+  width: 180,
+});
 ---
 
 {/* Important meta tags */}
@@ -73,21 +112,9 @@ const imageURL = new URL(image, Astro.url);
 <meta property="twitter:creator" content="@AtoraSuunva" />
 
 {/* Favicons */}
-<link
-  rel="apple-touch-icon"
-  sizes="180x180"
-  href="/favicon/apple-touch-icon.png"
-/>
-<link
-  rel="icon"
-  type="image/png"
-  sizes="32x32"
-  href="/favicon/favicon-32x32.png"
-/>
-<link
-  rel="icon"
-  type="image/png"
-  sizes="16x16"
-  href="/favicon/favicon-16x16.png"
-/>
-<link rel="manifest" href="/favicon/site.webmanifest" />
+<link rel="icon" type="image/svg+xml" href={faviconSvg.src} />
+<link rel="apple-touch-icon" sizes="180x180" href={appleTouchIcon.src} />
+<link rel="icon" type="image/png" sizes="32x32" href={favicon32x32.src} />
+<link rel="icon" type="image/png" sizes="16x16" href={favicon16x16.src} />
+<link rel="icon" sizes="32x32" href="/favicon.ico" />
+<link rel="manifest" href="/manifest.json" />

@@ -1,6 +1,5 @@
 ---
-import { Image } from "astro:assets";
-import feather from "@images/feather.png";
+import FeatherSVG from "@images/feather.svg";
 
 const page = Astro.url;
 
@@ -164,13 +163,7 @@ function active(name: string, strict = false) {
 
 <nav class="main-nav">
   <a class="nav-icon" href="/" aria-hidden="true">
-    <Image
-      src={feather}
-      alt="Feather icon"
-      height="32"
-      width="32"
-      loading="eager"
-    />
+    <FeatherSVG height="32" width="32" />
   </a>
   <input type="checkbox" id="nav-toggle" name="nav-toggle" aria-hidden="true" />
   <label class="nav-icon" for="nav-toggle" aria-hidden="true">
