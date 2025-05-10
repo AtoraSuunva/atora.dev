@@ -24,6 +24,7 @@ const { minutesRead, words } = remarkPluginFrontmatter;
   post.data.draft ? (
     <BlogPostLayout
       {...post.data}
+      head={{ title: post.data.title, description: post.data.description }}
       headings={headings}
       minutesRead={minutesRead}
       words={words}

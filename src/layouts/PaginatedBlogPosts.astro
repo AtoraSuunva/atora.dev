@@ -12,6 +12,7 @@ type Props = {
 };
 
 const { page, title, subtitle } = Astro.props;
+const description = `${subtitle} — Page ${page.currentPage} of ${page.lastPage}`;
 ---
 
 <style>
@@ -22,12 +23,12 @@ const { page, title, subtitle } = Astro.props;
   }
 </style>
 
-<PageLayout title={title} subtitle={subtitle}>
+<PageLayout head={{ title, description }} subtitle={subtitle}>
   <slot name="headerTail" slot="headerTail" />
 
   <h2>
     Page {page.currentPage}/{page.lastPage}
-    <small>({page.start + 1}—{page.end + 1} of {page.total})</small>
+    <small>({page.start + 1}‒{page.end + 1} of {page.total})</small>
   </h2>
 
   <Pagination page={page} />

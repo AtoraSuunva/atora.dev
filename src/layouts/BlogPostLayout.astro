@@ -7,14 +7,17 @@ import type { MarkdownHeading } from "astro";
 import { Image } from "astro:assets";
 import TableOfContents from "@components/TableOfContents.astro";
 import ScrollIndicator from "@components/ScrollIndicator.astro";
+import type { HeadProps } from "@components/Head.astro";
 
 type Props = CollectionEntry<"blog">["data"] & {
+  head: HeadProps;
   headings: MarkdownHeading[];
   minutesRead?: string;
   words?: number;
 };
 
 const {
+  head,
   title,
   description,
   pubDate,
@@ -37,6 +40,10 @@ const importedHero =
     line-height: 1.75em;
   }
 
+  .description {
+    margin-bottom: 0;
+  }
+
   .post-metadata {
     padding: 0.5em 0;
     line-height: 1.5em;
@@ -51,7 +58,15 @@ const importedHero =
   }
 </style>
 
-<BaseLayout title={title}>
+<BaseLayout
+  head={{
+    ...head,
+    title,
+    description,
+    image: heroImage,
+    keywords: tags,
+  }}
+>
   <Fragment slot="header">
     <h1 class="title">
       {title}
@@ -61,7 +76,7 @@ const importedHero =
     <p class="description">{description}</p>
     <div class="post-metadata">
       <p>
-        {minutesRead} ({words?.toLocaleString()} words)
+        {minutesRead} • {words?.toLocaleString()} words
       </p>
       {tags.length > 0 && <TagList tags={tags} />}
     </div>

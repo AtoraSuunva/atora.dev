@@ -2,11 +2,11 @@
 import type { GetStaticPaths } from "astro";
 import { getCollection } from "astro:content";
 import PaginatedBlogPosts from "@layouts/PaginatedBlogPosts.astro";
-import { sortByPubDate } from "src/utils/sorts";
+import { isPublishedPost, sortByPubDate } from "@utils/collections";
 
 export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getCollection("blog").then((c) =>
-    c.filter((c) => !c.data.draft).sort(sortByPubDate)
+    c.filter(isPublishedPost).sort(sortByPubDate),
   );
   return paginate(posts, { pageSize: 10 });
 }) satisfies GetStaticPaths;

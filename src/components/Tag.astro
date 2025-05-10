@@ -15,34 +15,36 @@ const { tag, tagUrl } = Astro.props;
     padding-inline-start: 0.3em;
     padding-inline-end: 0.6em;
     margin: 0;
-    background-color: var(--tertiary-color);
+    background-color: var(--nav-background);
+    border: 2px solid var(--tertiary-color);
     border-radius: 100em;
     color: var(--main-font);
     text-decoration: none;
     height: 100%;
     width: 100%;
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
   }
 
   .tag:before {
     content: "#";
-    background-color: var(--primary-color);
+    background-color: var(--tertiary-color);
     border-radius: 100%;
     height: 1.5em;
     width: 1.5em;
     line-height: 1.5em;
     text-align: center;
-    transition: all .3s ease-in-out;
+    transition: all 0.3s ease-in-out;
   }
 
   .tag:hover,
   .tag:focus {
-    background-color: var(--active-tertiary-color);
+    background-color: var(--nav-background);
+    border-color: var(--active-tertiary-color);
   }
 
   .tag:hover:before,
   .tag:focus:before {
-    background-color: var(--active-primary-color);
+    background-color: var(--active-tertiary-color);
   }
 </style>
 

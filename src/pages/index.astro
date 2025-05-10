@@ -5,7 +5,7 @@ import siggyBleppy from "@images/siggy-bleppy.png";
 import feather from "@images/feather.png";
 import Card from "@components/Card.astro";
 import { getCollection } from "astro:content";
-import { sortByPubDate } from "src/utils/sorts";
+import { isPublishedPost, sortByPubDate } from "@utils/collections";
 
 const posts = await getCollection("blog").then((c) => c.sort(sortByPubDate));
 ---
@@ -48,7 +48,9 @@ const posts = await getCollection("blog").then((c) => c.sort(sortByPubDate));
   }
 </style>
 
-<BaseLayout title="Home">
+<BaseLayout
+  head={{ title: "Home", description: "Atora Suunva's personal website" }}
+>
   <div class="center-piece" slot="header">
     <div>
       <h1>
@@ -98,7 +100,7 @@ const posts = await getCollection("blog").then((c) => c.sort(sortByPubDate));
     <h2>Recent Posts</h2>
     {
       posts
-        .filter((p) => !p.data.draft)
+        .filter(isPublishedPost)
         .slice(0, 3)
         .map((post) => (
           <Card

@@ -7,21 +7,18 @@ type BaseLayoutProps = Parameters<typeof BaseLayout>[0];
 type PageProps = BaseLayoutProps & {
   subtitle?: string;
 };
-
 type MDProps = MarkdownLayoutProps<PageProps>;
 
 type Props = PageProps | MDProps;
 
-const { title, subtitle, description, image, keywords } =
-  (Astro.props as MDProps).frontmatter ?? Astro.props;
+const { subtitle } =
+  (Astro.props as PageProps) ?? (Astro.props as MDProps).frontmatter;
+const { head } =
+  (Astro.props as MDProps).frontmatter ?? (Astro.props as PageProps);
+const { title, description } = head;
 ---
 
-<BaseLayout
-  title={title}
-  description={description}
-  image={image}
-  keywords={keywords}
->
+<BaseLayout head={head}>
   <Fragment slot="header">
     <h1 class="title">
       {title}

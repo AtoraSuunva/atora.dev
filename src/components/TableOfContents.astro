@@ -127,11 +127,11 @@ if (formattedHeadings.length > 0) {
     if (!article) return;
 
     const headings = Array.from(
-      article.querySelectorAll<HTMLElement>("h2,h3,h4,h5,h6")
+      article.querySelectorAll<HTMLElement>("h2,h3,h4,h5,h6"),
     );
 
     const tocLinks = Array.from(
-      document.querySelectorAll<HTMLAnchorElement>(".table-of-contents a")
+      document.querySelectorAll<HTMLAnchorElement>(".table-of-contents a"),
     );
 
     window.addEventListener(
@@ -157,8 +157,32 @@ if (formattedHeadings.length > 0) {
       },
       {
         passive: true,
-      }
+      },
     );
+
+    const MIN_WIDTH = 1768;
+    const toc = document.querySelector<HTMLDetailsElement>(".toc-container");
+
+    if (toc) {
+      let oldSize = 0;
+
+      const observer = new ResizeObserver((entries) => {
+        const width = Math.min(
+          ...entries.map((e) => e.contentBoxSize[0].inlineSize),
+        );
+
+        if (width === oldSize) return;
+        oldSize = width;
+
+        toc.open = width >= MIN_WIDTH;
+      });
+
+      observer.observe(document.body);
+
+      toc.addEventListener("click", () => {
+        observer.disconnect();
+      });
+    }
   });
 </script>
 

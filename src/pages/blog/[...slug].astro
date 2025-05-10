@@ -2,10 +2,11 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import BlogPostLayout from "@layouts/BlogPostLayout.astro";
 import { render } from "astro:content";
+import { isPublishedPost } from "@utils/collections";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog").then((c) =>
-    c.filter((c) => !c.data.draft)
+    c.filter(isPublishedPost),
   );
 
   return posts.map((post) => ({
@@ -22,6 +23,7 @@ const { minutesRead, words } = remarkPluginFrontmatter;
 
 <BlogPostLayout
   {...post.data}
+  head={{ title: post.data.title, description: post.data.description }}
   headings={headings}
   minutesRead={minutesRead}
   words={words}

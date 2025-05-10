@@ -1,8 +1,9 @@
 ---
 layout: '../layouts/PageLayout.astro'
-title: About
-subtitle: Me!
-description: Who is this funny computer person on the internet.
+head:
+  title: About
+  subtitle: Me!
+  description: Who is this funny computer person on the internet.
 ---
 
 ## Where did the name come from?

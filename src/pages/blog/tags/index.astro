@@ -14,7 +14,10 @@ const postsByTag = uniqueTags
 ---
 
 <PageLayout
-  title="All Tags"
+  head={{
+    title: "All Tags",
+    description: "All tags used in the blog",
+  }}
   subtitle={`${uniqueTags.length} tag${uniqueTags.length === 1 ? "" : "s"}`}
 >
   <p slot="headerTail">

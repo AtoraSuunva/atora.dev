@@ -1,28 +1,41 @@
 ---
 import { Font } from "astro:assets";
-import { SITE_DESCRIPTION, SITE_TITLE } from "../consts";
+import { SITE_DESCRIPTION, SITE_TITLE, SITE_TITLE_TEMPLATE } from "../consts";
 
 interface Props {
   title: string;
+  titleTemplate?: string;
   description?: string;
   image?: string;
   keywords?: string[];
+  themeColor?: string;
 }
+
+export type HeadProps = Props;
 
 const {
   title,
+  titleTemplate = SITE_TITLE_TEMPLATE,
   description = SITE_DESCRIPTION,
   image = "/images/feather.png",
   keywords = [],
+  themeColor = "#88927B",
 } = Astro.props;
 
+const titleTag = titleTemplate.replace(/%s/g, title);
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const imageURL = new URL(image, Astro.url);
 ---
 
-{/* Global Metadata */}
+{/* Important meta tags */}
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>{titleTag}</title>
+
+{/* Fonts */}
+<Font cssVariable="--font-roboto" preload />
+<Font cssVariable="--font-source-code-pro" />
+
 <link rel="icon" href="/favicon/favicon.ico" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 <link
@@ -37,11 +50,10 @@ const imageURL = new URL(image, Astro.url);
 <link rel="canonical" href={canonicalURL} />
 
 {/* Primary Meta Tags */}
-<title>{title} - {SITE_TITLE}</title>
 <meta name="title" content={title} />
 <meta name="description" content={description} />
 <meta name="keywords" content={keywords.join(", ")} />
-<meta name="theme-color" content="#88927B" />
+<meta name="theme-color" content={themeColor} />
 
 {/* Open Graph / Facebook */}
 <meta property="og:type" content="website" />
@@ -79,7 +91,3 @@ const imageURL = new URL(image, Astro.url);
   href="/favicon/favicon-16x16.png"
 />
 <link rel="manifest" href="/favicon/site.webmanifest" />
-
-{/* Fonts */}
-<Font cssVariable="--font-roboto" preload />
-<Font cssVariable="--font-source-code-pro" />

@@ -1,8 +1,9 @@
 ---
 layout: '../layouts/PageLayout.astro'
-title: Contact
-subtitle: Messenger Pigeon Soon
-description: Ways to get in contact with me, if you need something.
+head:
+  title: Contact
+  subtitle: Messenger Pigeon Soon
+  description: Ways to get in contact with me, if you need something.
 ---
 
 The preferred way to reach me about something related to my code is opening an issue on [my GitHub repos](https://github.com/AtoraSuunva).

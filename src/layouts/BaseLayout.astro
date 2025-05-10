@@ -1,17 +1,14 @@
 ---
 import "../styles/global.css";
-import BaseHead from "@components/BaseHead.astro";
+import Head, { type HeadProps } from "@components/Head.astro";
 import Nav from "@components/Nav.astro";
 import Footer from "@components/Footer.astro";
 
 export interface Props {
-  title: string;
-  description?: string;
-  image?: string;
-  keywords?: string[];
+  head: HeadProps;
 }
 
-const { title, description, image, keywords = [] } = Astro.props;
+const { head } = Astro.props;
 ---
 
 <style>
@@ -74,12 +71,7 @@ const { title, description, image, keywords = [] } = Astro.props;
 
 <html lang="en">
   <head>
-    <BaseHead
-      title={title}
-      description={description}
-      image={image}
-      keywords={keywords}
-    />
+    <Head {...head} />
   </head>
   <body>
     <Nav />

@@ -11,15 +11,11 @@ type Props = MarkdownLayoutProps<
 >;
 
 const { frontmatter } = Astro.props;
-const { title, subtitle, description, image, keywords } = frontmatter;
+const { head, subtitle } = frontmatter;
+const { title, description } = head;
 ---
 
-<BaseLayout
-  title={title}
-  description={description}
-  image={image}
-  keywords={keywords}
->
+<BaseLayout head={head}>
   <Fragment slot="header">
     <h1 class="title">
       {title}
