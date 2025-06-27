@@ -9,6 +9,9 @@ import rehypeCallouts from 'rehype-callouts';
 import rehypeFigure from 'rehype-figure';
 import rehypeSemanticBlockquotes from 'rehype-semantic-blockquotes';
 import { remarkReadingTime } from './src/plugins/remark-reading-time';
+// import { transformerStyleToClass } from '@shikijs/transformers';
+
+// const toCSS = transformerStyleToClass({ classPrefix: 'shiki-' })
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,6 +23,10 @@ export default defineConfig({
   markdown: {
     shikiConfig: {
       theme: 'dark-plus',
+      wrap: true,
+      // transformers: [
+      //   toCSS,
+      // ]
     },
     remarkRehype: {
       clobberPrefix: '',
@@ -34,10 +41,22 @@ export default defineConfig({
     remarkPlugins: [remarkReadingTime],
   },
   image: {
-    experimentalLayout: 'full-width',
+    responsiveStyles: true,
+    layout: 'full-width',
   },
   experimental: {
-    responsiveImages: true,
+    // csp: {
+    //   directives: [
+    //     "frame-ancestors 'none'",
+    //   ],
+    //   styleDirective:{
+    //     resources: [
+    //       "'self'",
+    //       "'unsafe-inline'",
+    //       "'strict-dynamic'",
+    //     ]
+    //   }
+    // },
     contentIntellisense: true,
     preserveScriptOrder: true,
     fonts: [{
