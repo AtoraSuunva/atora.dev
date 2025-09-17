@@ -111,7 +111,7 @@ Computers work with binary bits, 0s and 1s. In order to store any non-bit data�
 4. And some other issues that aren't relevant to character handling.
 
 import beaudotTape from './Baudot_Tape.jpg'
-import {Picture} from 'astro:assets'
+import { Picture } from 'astro:assets'
 
 <figure class="figure-image">
   <Picture src={beaudotTape} alt="A piece of teletype tape with ITA2 encoded text punched on it." />
@@ -124,7 +124,12 @@ IBM later came out with Extended Binary Coded Decimal Interchange Code (EBCDIC) 
 
 [^utf-ebcdic]: Unless you are [desperate](https://en.wikipedia.org/wiki/UTF-EBCDIC).
 
-![ASCII67, which still haunts us to this day.](./USASCII_code_chart.png)
+import usasciiChart from './USASCII_code_chart.png'
+
+<figure class="figure-image">
+  <Picture src={usasciiChart} alt="A code chart from the original ASCII67 standard that explains the mapping from bits to characters" />
+  <figcaption>ASCII67, which still haunts us to this day. <p>Source: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:USASCII_code_chart.svg), Public Domain</p></figcaption>
+</figure>
 
 ASCII63 took over as the standard character encoding and used 7-bits, but *still* lacked lowercase letters until ASCII67. It had no mode-switching and no code pages so you could read any arbitrary byte (assuming 7-bit ASCII padded to 8-bits) and decode a single character. Unfortunately, as an American-centric encoding it lacked not only characters from other languages like é or อั, but even currency symbols like € or ¥. An attempt was made to support other languages with 8-bit extended ASCII, but it reintroduced code pages and still couldn't represent some languages like Japanese. 14-bit JIS was created to cover Japanese, but couldn't cover Chinese. There's wasn't any *one* character encoding *everyone* could use.
 

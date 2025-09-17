@@ -5,8 +5,6 @@ import sitemap from '@astrojs/sitemap';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import rehypeCallouts from 'rehype-callouts';
-// @ts-expect-error
-import rehypeFigure from 'rehype-figure';
 import rehypeSemanticBlockquotes from 'rehype-semantic-blockquotes';
 import { remarkReadingTime } from './src/plugins/remark-reading-time';
 import remarkMath from 'remark-math';
@@ -35,7 +33,6 @@ export default defineConfig({
       [rehypeSlug, { prefix: '' }],
       [rehypeAutolinkHeadings, { behavior: 'append' }],
       [rehypeCallouts, { theme: 'github' }],
-      [rehypeFigure, { className: 'figure-image' }],
       rehypeSemanticBlockquotes,
       rehypeMathjax,
       rehypeCodeGroup,

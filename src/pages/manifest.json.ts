@@ -15,8 +15,6 @@ export const GET: APIRoute = async () => {
         format: 'png',
       })
 
-      console.log(image)
-
       return {
         src: image.src,
         type: `image/${image.options.format}`,

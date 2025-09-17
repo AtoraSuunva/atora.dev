@@ -154,11 +154,21 @@ code {
 .astro-code .line::before {
 	content: counter(line);
 	display: inline-block;
-	width: 2em;
-	margin-right: 2em;
+	width: 1.75em;
+	margin-right: 1em;
 	color: var(--muted-font);
 	text-align: right;
 	opacity: 0.5;
+}
+
+@media screen and (max-width: 768px) {
+	.astro-code {
+		padding: 1em 2em;
+	}
+
+	.astro-code .line::before {
+		display: none;
+	}
 }
 
 :not(.astro-code)>code {
@@ -286,14 +296,12 @@ details[open] .callout-title {
 .figure-image {
 	display: flex;
 	flex-direction: column;
+	justify-items: center;
 	align-items: center;
 	margin: 2em;
 
-	& img,
-	& picture {
-		object-fit: contain;
-		width: min-content;
-		max-height: 250px;
+	& img {
+		max-height: 350px;
 		border-radius: var(--border-radius);
 		box-shadow: var(--box-shadow-raised);
 		overflow: hidden;
@@ -309,6 +317,12 @@ details[open] .callout-title {
 		& p {
 			margin: 0;
 		}
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.figure-image {
+		margin: 0.5em;
 	}
 }
 
