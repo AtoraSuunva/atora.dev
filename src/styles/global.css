@@ -105,13 +105,12 @@ table {
 table th,
 table td {
 	padding: 0.5em;
-	/* border: 1px solid var(--tertiary-color); */
-	border: 1px solid var(--nav-background);
+	border: 1px solid #555;
 	background-color: var(--background-darken);
 }
 
 table th {
-	border-bottom: 1px solid var(--tertiary-color);
+	border-bottom: 2px solid var(--tertiary-color);
 	background-color: var(--nav-background);
 	color: var(--nav-font);
 }
@@ -134,8 +133,7 @@ code {
 
 .astro-code {
 	border-radius: var(--border-radius);
-	margin: 2em;
-	margin-left: 0;
+	margin: 1em 0;
 	padding: 1em 2em;
 	padding-left: 0;
 	box-shadow: var(--box-shadow-raised);
@@ -147,7 +145,6 @@ code {
 	padding-left: calc(50vw - 50%);
 	padding-right: calc(50vw - 50%); */
 	width: 100%;
-	box-shadow: var(--box-shadow-raised-big);
 }
 
 .astro-code .line {
@@ -227,6 +224,10 @@ blockquote>p {
 	margin: 1em 0;
 }
 
+.callout[data-collapsible="true"] summary {
+	cursor: pointer;
+}
+
 .callout-fold-icon {
 	display: flex;
 	transition: all 0.3s ease-in-out;
@@ -287,19 +288,28 @@ details[open] .callout-title {
 	flex-direction: column;
 	align-items: center;
 	margin: 2em;
-}
 
-.figure-image img {
-	object-fit: contain;
-	width: min-content;
-	max-height: 250px;
-	border-radius: var(--border-radius);
-	box-shadow: var(--box-shadow-raised);
-	overflow: hidden;
-}
+	& img,
+	& picture {
+		object-fit: contain;
+		width: min-content;
+		max-height: 250px;
+		border-radius: var(--border-radius);
+		box-shadow: var(--box-shadow-raised);
+		overflow: hidden;
+	}
 
-.figure-image figcaption {
-	font-size: 0.85em;
+	& figcaption {
+		font-size: 0.85em;
+		color: var(--muted-font);
+		margin-top: 0.5em;
+		text-align: center;
+		width: 90%;
+
+		& p {
+			margin: 0;
+		}
+	}
 }
 
 kbd {
@@ -319,10 +329,39 @@ mark {
 	margin: 2em calc(-50vw + 50%) -2em calc(-50vw + 50%);
 	padding: 1em calc(50vw - 50%);
 	background-color: var(--background-darken);
+
+	& ol {
+		padding-left: 16px;
+	}
 }
 
-.footnotes ol {
-	padding-left: 16px;
+.rehype-code-group {
+	padding: 0 1em;
+	border-left: 2px solid var(--secondary-color);
+	/* background-color: var(--background-darken-light); */
+}
+
+.rcg-tab-container {
+	border: none;
+	border-radius: var(--border-radius);
+	padding: 0.25em;
+}
+
+.rcg-tab {
+	color: var(--muted-font);
+	border-bottom: 2px solid var(--background-darken);
+	margin-right: 0.5em;
+	transition: all 0.3s ease-in-out;
+
+	&.active {
+		color: var(--main-font);
+		font-weight: initial;
+		border-bottom-color: var(--secondary-color);
+	}
+}
+
+.rcg-block :first-child {
+	margin-top: 0;
 }
 
 @media screen and (max-width: 768px) {

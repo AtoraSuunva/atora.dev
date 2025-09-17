@@ -36,11 +36,16 @@ if (formattedHeadings.length > 0) {
 <style>
   .toc-container {
     display: inline-block;
+    width: 275px;
     padding: 0.75em;
     margin: 0.25em 0 2em 0;
     background-color: var(--background-darken);
     box-shadow: var(--box-shadow-raised);
     border-radius: var(--border-radius);
+  }
+
+  .toc-container summary {
+    cursor: pointer;
   }
 
   nav.table-of-contents {
@@ -59,7 +64,8 @@ if (formattedHeadings.length > 0) {
   }
 
   nav.table-of-contents :global(ol) :global(li) {
-    margin: 0.25em 0;
+    display: flex;
+    margin: 0.5em 0;
     padding: 0;
   }
 
@@ -89,7 +95,7 @@ if (formattedHeadings.length > 0) {
       float: left;
       shape-outside: inset(50% 100% 50% 0px);
       transform: translate(-120%);
-      width: 275px;
+      margin-bottom: -100%;
       max-height: calc(100vh - 40px);
       overflow-y: auto;
       background-color: color-mix(in oklch, black 30%, var(--main-background));

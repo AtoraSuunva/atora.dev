@@ -1,0 +1,396 @@
+---
+title: 'Unicode is Tricky'
+description: 'Turns out "what is a character?" is actually a really hard question! But why is it so hard and why should you care?'
+pubDate: 'July 24 2025'
+tags: ['programming', 'unicode']
+draft: true
+---
+
+## Writing a simple formatter
+
+Say you wanted to write a bit of code to format the first character of a string to apply some pretty formatting to it, like this:
+
+```js
+text = "Hello world!"
+// We want to format text like this:
+// <H>ello world!
+```
+
+You open up your favorite editor and write in your favorite language:
+
+::: code-group labels=[JavaScript, Python, Java, C#, C, Go]
+
+```js
+const text = "Hello world!"
+console.log(`<${text[0]}>${text.substring(1)}`)
+```
+
+```py
+text = "Hello world!"
+print(f"<{text[0]}>{text[1:]}")
+```
+
+```java
+String text = "Hello world!";
+System.out.println(String.format("<%s>%s", text.charAt(0), text.substring(1)));
+```
+
+```cs
+string text = "Hello world!";
+Console.WriteLine($"<{text[0]}>{text[1..]}");
+```
+
+```c
+// C doesn't have a string type built-in, instead we use pointers to some bytes in memory
+// There are some types other than `char` that we can use that I'll discuss later
+char *text = "Hello world!";
+printf("<%c>%s", text[0], &text[1]);
+```
+
+```go
+var text = "Hello world!"
+fmt.Printf("<%c>%s", text[0], text[1:])
+```
+
+:::
+
+And for most other languages you can repeat the same pattern, but Rust will refuse to let us just index a single character and force us to use a string slice[^rust-slice]:
+
+[^rust-slice]: If you're an apt Rustacean you're probably already thinking about how this slice can (and will) panic.
+
+```rs
+let text = "Hello world!";
+println!("<{}>{}", &text[0], &text[1..]);
+// error[E0277]: the type `str` cannot be indexed by `{integer}`
+
+// We need to specify a string slice even if the slice we want is just 1 character
+println!("<{}>{}", &text[0..1], &text[1..]);
+// "<H>ello world!"
+```
+
+And Swift will refuse to even let us index with integers at all, forcing us to use their `String.Index` struct:
+
+```swift
+let index = text.index(text.startIndex, offsetBy: 1)
+print("<\(text.first ?? "?")>\(text[index...])")
+```
+
+You write up some unit tests and handle the edge case of an empty string. Everything works well until a user breaks it in production (as is tradition):
+
+Language   | `Hello world!`   | 1: `Être1` | 2: `Être2` | `👨‍👨‍👧‍👧 Family`       |
+-----------|------------------|------------|------------|-------------------|
+Javascript | `<H>ello world!` | `<Ê>tre1`  | `<E>̂tre2` | `<�>�‍👨‍👧‍👧 Family`   |
+Python     | `<H>ello world!` | `<Ê>tre1`  | `<E>̂tre2` | `<👨>‍👨‍👧‍👧 Family`   |
+Java       | `<H>ello world!` | `<Ê>tre1`  | `<E>̂tre2` | `<�>�‍👨‍👧‍👧 Family`   |
+C#         | `<H>ello world!` | `<Ê>tre1`  | `<E>̂tre2` | `<�>�‍👨‍👧‍👧 Family`   |
+C          | `<H>ello world!` | `<�>�tre1` | `<E>̂tre2` | `<�>���‍👨‍👧‍👧 Family` |
+Go         | `<H>ello world!` | `<Ã>�tre1` | `<E>̂tre2` | `<ð>���‍👨‍👧‍👧 Family` |
+Rust       | `<H>ello world!` |  Panics    | `<E>̂tre2` | Panics, see below |
+Swift      | `<H>ello world!` |  `<Ê>tre1` | `<Ê>tre2`  | `<👨‍👨‍👧‍👧> Family`     |
+
+```rs
+println!("<{}>{}", &text[0..1], &text[1..]);
+// thread 'main' panicked at src/main.rs:3:29:
+// byte index 1 is not a char boundary; it is inside 'Ê' (bytes 0..2) of `Être1`
+
+// thread 'main' panicked at src/main.rs:3:29:
+// byte index 1 is not a char boundary; it is inside '👨' (bytes 0..4) of `👨‍👨‍👧‍👧 Family`
+```
+
+Huh? How can this be so hard? It can't be that complicated to get a single character, can it?
+
+## A Short History of String Encoding
+
+Before I talk about what exactly went wrong here, it helps to know a bit of history behind string encoding to understand why it couldn't be so simple (we tried!). If you're already familiar or you just don't care you can [skip ahead](#what-is-a-unicode-character).
+
+Computers work with binary bits, 0s and 1s. In order to store any non-bit data—like strings and numbers—we need to encode it into bits. One of the first character encodings was the [Baudot Code](https://en.wikipedia.org/wiki/Baudot_code) in the 1870s, which was a simple encoding that used 5 bits to transmit characters over telegraph or radio. 5 bits allowed for $5^2 = 32$ different characters, which was doubled by introducing a "figure" mode that could be switched into or out of. This worked for (uppercase only) Roman alphabet, arabic numbers, some punctuation, and control signals, but had some issues:
+
+1. You were limited to a 32 possible characters unless you switched modes
+2. You had to read the entire string from the start to know which mode you were in, so you couldn't skip ahead to read a sequence later on.
+3. You had to know which version of Baudot code you were reading. `11000` represented É or & in Continental versions, but / or 1/ in UK versions.
+4. And some other issues that aren't relevant to character handling.
+
+import beaudotTape from './Baudot_Tape.jpg'
+import {Picture} from 'astro:assets'
+
+<figure class="figure-image">
+  <Picture src={beaudotTape} alt="A piece of teletype tape with ITA2 encoded text punched on it." />
+  <figcaption>Funnily enough, modern storage works basically the same but on _much_ smaller scale. <p>Source: [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Baudot_Tape.JPG) by [Ricardo Ferreira de Oliveira](https://commons.wikimedia.org/wiki/User:Ricardo_Ferreira_de_Oliveira), [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0)</p></figcaption>
+</figure>
+
+Baudot and it's more popular replacement ITA2 were left behind when computers came along. The first electronic computers by IBM used binary-coded decimal (BCD) encoding, which removed the problem of mode-switching but with a 6-bit code it could only represent $2^6 = 64$ characters (still only enough for just the uppercase letters of the Roman alphabet with numbers and punctuation) and with multiple code pages you *still* had to know which version you were reading.
+
+IBM later came out with Extended Binary Coded Decimal Interchange Code (EBCDIC) in 1963 that used 8-bits and finally supported lowercase letters, but with the same issue of needing to know which (of the hundreds!) code page it was using. EBCDIC isn't really used today[^utf-ebcdic], so we can focus on the much more relevant (and released in the same year) American Standard Code for Information Interchange, more commonly known as ASCII.
+
+[^utf-ebcdic]: Unless you are [desperate](https://en.wikipedia.org/wiki/UTF-EBCDIC).
+
+![ASCII67, which still haunts us to this day.](./USASCII_code_chart.png)
+
+ASCII63 took over as the standard character encoding and used 7-bits, but *still* lacked lowercase letters until ASCII67. It had no mode-switching and no code pages so you could read any arbitrary byte (assuming 7-bit ASCII padded to 8-bits) and decode a single character. Unfortunately, as an American-centric encoding it lacked not only characters from other languages like é or อั, but even currency symbols like € or ¥. An attempt was made to support other languages with 8-bit extended ASCII, but it reintroduced code pages and still couldn't represent some languages like Japanese. 14-bit JIS was created to cover Japanese, but couldn't cover Chinese. There's wasn't any *one* character encoding *everyone* could use.
+
+In August 1988, the [Unicode 88](https://unicode.org/history/unicode88.pdf) draft proposal was published. It was an attempt at a "workable, reliable world text encoding", a "'wide-body ASCII' that has been stretched to 16 bits to encompass the characters of all the world's living languages." At the time, Unicode 88 seemed like the ideal solution:
+
+1. $2^{16} = 65,536$ possible codes, which Unicode 88 assures us is enough.
+2. One-to-one correspondence between character codes and language characters. No mode switching!
+3. One version of Unicode that covers all the world's languages. No code pages!
+4. If we focus on "modern-use" characters there's *got* to be less than $2^{14} = 16,384$ so we can have a fixed 16-bit character code design! You can skip ahead to any character in a string!
+
+Modern Unicode has 8-bit, 16-bit, and 32-bit encodings, and uses 5 planes. Turns out 16-bits wasn't enough (we ended up using 21-bits for $2^{21} = 2,097,152$ codes)[^han-unification], but modern Unicode *can* encode all the world's languages! It just wasn't simple.
+
+[^han-unification]: Unicode 88 focused only on "modern-use" characters, while modern Unicode aims to cover every writing system that has ever been used (including variants). Unicode 88 also attempted to unify Han characters (used in Chinese, Japanese, and Korean) by their meaning and only allocated 20,940 code points for them (out of the estimated ~100k that would've been needed). The [Han Unification](https://en.wikipedia.org/wiki/Han_unification) was controversial and now results in some characters having different appearances in different languages despite using the same code point. I recommend checking out the Wikipedia article because the Han Unification would be a whole other blog post on its own.
+
+## What *is* a Unicode character?
+
+First, Unicode isn't an encoding format. Unicode is a standard that defines rules for representing and storing text, using *codespace* that maps *abstract characters* to numerical *code points*. Code points can be combined together into *grapheme clusters* or broken down into one or more *code units* to be encoded in memory. What does any of this mean? Let's break down an example string and look at how Unicode represents it:
+
+> [!tip]
+> The example below is interactive, you can type in your own string to see how it is represented in code units.
+>
+> Note that the Unicode viewer breaks down UTF encodings into *code units*, which don't use [byte-order encoding](https://en.wikipedia.org/wiki/UTF-16#Byte-order_encoding_schemes) and may not match the bytes you see in memory.
+
+import { UnicodeViewer } from '@components/preact/UnicodeViewer.tsx'
+
+<UnicodeViewer client:load initialString="WΒ위𐍅ñ" />
+
+The viewer breaks down a string into multiple Unicode components:
+
+- *Grapheme Cluster*: What we humans generally consider a "character"[^grapheme-cluster].
+  - For us Anglophones, these are usually things like letters and punctuation, like "abc" being made of the graphemes "a", "b", and "c". But some other languages are a little more complicated! Unicode defines [a set of rules](https://unicode.org/reports/tr29/) to determine grapheme cluster boundaries.
+- *Code Point*: A number value that points to somewhere in the Unicode codespace.
+  - You have to look up the code point in the [Unicode Character Code Charts](https://www.unicode.org/charts/) to find out what character it represents (if any!).
+  - The viewer also tries to create a string representation for each code point, but not all code points have a visual representation! Some of them are modifiers for other codepoints.
+- *UTF-32*, *UTF-16*, *UTF-8*: 3 encoding formats used to represent the character in memory:
+  - UTF-32 uses 1 code unit (32-bits each) per code point.
+  - UTF-16 uses 1 or 2 code units (16-bits each) per code point.
+  - UTF-8 uses 1 to 4 code units (8-bits each) per code point.
+
+[^grapheme-cluster]: This isn't *technically* correct, since Grapheme Clusters are designed to be [unambiguous approximations](https://unicode.org/reports/tr29/) of the very ambiguous human languages. For example, "ch" would be 2 characters for us in English, but is considered 1 character in Czech (like in crosswords). The viewer uses [`Intl.Segmenter`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/Segmenter/Segmenter) to split strings into grapheme clusters and likely splits "ch" into "c" and "h" in your browser (unless you are using a Czech locale).
+
+The viewer aligns columns to match with their associated grapheme, so:
+
+- The Grapheme "W" is:
+  - The Code Point `U+0057`
+  - Which is encoded in:
+    - UTF-32 as `00000057`
+    - UTF-16 as `0057`
+    - UTF-8 as `57`
+- The Grapheme "Β" is:
+  - The Code Point `U+0392`
+  - Which is encoded in:
+    - UTF-32 as `00000392`
+    - UTF-16 as `0392`
+    - UTF-8 as `CE 92` (Two 8-bit code units!)
+- And so on.
+
+You can always encode a Code Point using a single UTF-32 unit, but some Code Points require 2 UTF-16 units or even up to 4 UTF-8 units. A grapheme can be 1 or more code points. Which one does unicode consider a "character"?
+
+It's complicated. The [UTF-8 Everywhere Manifesto](https://utf8everywhere.org/#characters) goes into more detail about these possible *character* definitions (and there's more possibilities!). But we humans generally consider a Grapheme to be a character (but a Unicode Grapheme is an approximation) while Unicode uses it to mean a "Coded Character".
+
+What about our programming languages? When we index a string what exactly are we indexing? Lets break down `Être1` and see:
+
+<UnicodeViewer client:load initialString="Être1" />
+
+- `Ê` is a Grapheme Cluster
+- Unicode considers it a single code point "Ê" (`U+00CA`)
+- UTF-32 encodes it as 1 unit: `000000CA`
+- UTF-16 encodes it as 1 unit: `00CA`
+- UTF-8 encodes it as 2 units: `C3 8A`
+
+C, Go, and Rust were the only ones to fail this example. How are they handling strings and string indexing?
+
+C doesn't have a dedicated string type, instead it uses a pointer to a `char` and it continues to read bytes until it hits a null character (the byte `\0`). How exactly our compiler interprets string literals and converts them into bytes depends on the compiler, the encoding of the source file, and config flags passed to the compiler. In my setup gcc interprets the source files as UTF-8 and thus uses UTF-8 encoding for string literals. Since our `text` variable is just a pointer to a `char`, our string indexing is simply a byte offset. So our code effectively does:
+
+```c
+char *text = "Être1";
+// The string is UTF-8 encoded and stored as bytes by the compiler:
+// Ê     t  r  e  1  NUL
+// C3 8A 74 72 65 31 00
+printf("<%c>%s", text[0], &text[1]);
+// Print "<", then the first byte of `text`, then ">", then the bytes of `text` starting from the second byte
+// Visualized, it looks like this:
+//    Ê    | t  | r
+// 0  | 1  | 2  | 3
+// C3 | 8A | 74 | 72
+// ↓   ↙   ↙    ↙
+//<C3>8A 74 72...
+// Oops, we just split up Ê!
+```
+
+UTF-8 and UTF-16 are designed to make detecting invalid sequences easy. For example, the table to convert Unicode code points to UTF-8 code units looks like this:
+
+| First code point | Last code point | Byte 1     | Byte 2     | Byte 3     | Byte 4     |
+|------------------|-----------------|------------|------------|------------|------------|
+| `U+0000`         | `U+007F`        | `0yyyzzzz` |            |            |            |
+| `U+0080`         | `U+07FF`        | `110xxxyy` | `10yyzzzz` |            |            |
+| `U+0800`         | `U+FFFF`        | `1110wwww` | `10xxxxyy` | `10yyzzzz` |            |
+| `U+010000`       | `U+10FFFF`      | `11110uvv` | `10vvwwww` | `10xxxxyy` | `10yyzzzz` |
+
+So our letter `t` (`U+0074`) is encoded using only 1 byte: `01110100`. Since the first bit is `0` UTF-8 decoders know that whatever code point this is only requires 1 byte. Our letter `Ê` (`U+00CA`) is encoded using 2 bytes: `11000011 10001010`, the first byte starts with `110` so UTF-8 decoders know that this code point requires 2 bytes. The second byte starts with `10` so UTF-8 decoders know that this is a continuation byte and not the start of a new code point.
+
+In order to print out `Ê` correctly we need to print out both bytes together. Our C code splits up these bytes and ends up printing `>` (`U+003E`) between them, resulting in the following bytes:
+
+```
+C3       3E      8A
+11000011 0111110 10001010
+^^^
+Starts with "110", so we expect 1 continuation byte...
+
+0111110
+^
+But the following byte starts with "0", not "10"! There's an invalid UTF-8 sequence here!
+
+10001010
+^^
+And the next byte starts with "10", so it's a continuation byte but we did not expect a continuation byte!
+```
+
+Splitting them up results in invalid UTF-8 sequences that get replaced by `�`.
+
+> [!note]- C's many char types
+> If you're familiar with C you might've thought "why are you using `char` instead of one of the other types???". I know there's more types! They just don't solve our problem.
+>
+> For those unaware: C does support "wide strings" with `wchar_t`, `char16_t`, and `char32_t` types, but these types can't be used as drop-in replacements for `char` as they're different internally.
+>
+> The size and encoding of `wchar_t` is implementation-defined[^wchar_t-size]. On Windows platforms it's *usually* 16-bits UTF-16LE (except on older Windows where it's the older UCS-2 encoding) and on Linux it's *usually* 32-bits UTF-32. But these are compiler *defaults* so it *could* be *anything* if you change your compiler options.
+> [^wchar_t-size]: See [this StackOverflow answer](https://stackoverflow.com/a/21264892)
+>
+> `char16_t` and `char32_t` were introduced in C11 but weren't required to specific encodings[^c-char-encodings] until C23 where UTF-16 and UTF-32 encodings were enforced.
+> [^c-char-encodings]: [The C standards are fun!](https://stackoverflow.com/a/50658001)
+>
+> C *can* print out "Être1" correctly (with the right compiler options) using `wchar_t`, `char16_t` (with required conversion), or `char32_t` types:
+>
+> ```c
+> #include <stdio.h>
+> #include <wchar.h>
+> #include <uchar.h>
+> #include <locale.h>
+> #include <stdlib.h>
+>
+> int main()
+> {
+>     setlocale(LC_ALL, "");
+>
+>     // if (__STDC_UTF_16__ = 1) then char16_t is UTF-16
+>     printf("__STDC_UTF_16__ = %d\n", __STDC_UTF_16__);
+>     // if (__STDC_UTF_32__ = 1) then char32_t is UTF-32
+>     printf("__STDC_UTF_32__ = %d\n", __STDC_UTF_32__);
+>     printf("__STDC_VERSION__ = %ld\n", __STDC_VERSION__);
+>
+>     wchar_t *wchar_str = L"Être1";
+>     printf("wchar_str = <%lc>%ls\n", wchar_str[0], &wchar_str[1]);
+>
+>     // printf can't handle char16_t directly, so we need to convert it to multibyte and *then* print it
+>     char16_t *char16_str = u"Être1";
+>     char mb_buff[MB_CUR_MAX + 1];
+>     mbstate_t ps = {0};
+>
+>     printf("char16_str = <");
+>
+>     for (size_t i = 0; char16_str[i] != '\0'; i++) {
+>         size_t len = c16rtomb(mb_buff, char16_str[i], &ps);
+>         if (len == (size_t)-1) {
+>             perror("c16rtomb failed");
+>             exit(EXIT_FAILURE);
+>         }
+>         mb_buff[len] = '\0'; // Null-terminate the multibyte string
+>         printf("%s", mb_buff);
+>
+>         if (i == 0) {
+>             printf(">");
+>         }
+>     }
+>     printf("\n");
+>
+>     char32_t *char32_str = U"Être1";
+>     printf("char32_str = <%lc>%ls\n", char32_str[0], &char32_str[1]);
+>     return 0;
+> }
+> ```
+>
+> Prints (on my machine, gcc `Ubuntu 14.2.0-19ubuntu2` with defaults `gcc test.c`):
+>
+> ```c
+> __STDC_UTF_16__ = 1
+> __STDC_UTF_32__ = 1
+> __STDC_VERSION__ = 201710
+> wchar_str = <Ê>tre1
+> char16_str = <Ê>tre1
+> char32_str = <Ê>tre1
+> ```
+>
+> But this isn't a real fix, instead our string conveniently aligns code units with graphemes and hides the still-existing bug in our code. Our second example `Être2` isn't improved because the code units don't conveniently align with the graphemes anymore:
+>
+> ```c
+> wchar_str = <E>̂tre2
+> char16_str = <E>̂tre2
+> char32_str = <E>̂tre2
+> ```
+>
+> And for our family example `👨‍👨‍👧‍👧 Family` it is slightly better but still not good:
+>
+> ```c
+> wchar_str = <👨>‍👨‍👧‍👧 Family
+> char16_str = <>👨‍👨‍👧‍👧 Family
+> char32_str = <👨>‍👨‍👧‍👧 Family
+> ```
+>
+> Not only does changing the character encoding not fix our problem of having to handle graphemes correctly, since those types aren't considered equivalent to `char` we can no longer use any library functions that accept `char` without first converting our strings.
+
+Go also failed because string indexing returns bytes. Since Go string literals are stored in UTF-8 encoding[^go-strings] our first byte is `C3`, which we then tell `Printf` to print as a `%c` or Code Point, *not* UTF-8! The code point `U+00C3` is the letter "Ã", which is why we get such an odd output.
+
+[^go-strings]: String literals are in UTF-8 since Go source code must be UTF-8 encoded, *unless* you use byte escapes like `\xbd`. [Strings are otherwise just byte slices with no required encoding](https://go.dev/blog/strings).
+
+Rust fails for the same reason, but since Rust enforces that str slices are valid UTF-8 sequences[^rust-invalid-strings] it panics instead of printing invalid UTF-8.
+
+[^rust-invalid-strings]: Rust will check at compile-time and at run-time to enforce this, *unless* you explicitly use `unsafe` code to opt-out. Creating a string with invalid UTF-8 is undefined behavior though and will likely break things.
+
+What about the other languages? Javascript, Java, and C# use UTF-16 encodings for strings and their indexing works by UTF-16 code units. The code point for `Ê` is conveniently encoded as a single UTF-16 code unit `00CA` so indexing doesn't split up our code points and it works fine. Python uses [multiple encodings internally](https://www.b-list.org/weblog/2017/sep/05/how-python-does-unicode/) but does indexing by code points so it also works. Swift... is a surprise I'll save for later 😉, but it also doesn't split code points.
+
+So why not just use UTF-16 for indexing then? Let's look at our second example `Être2`:
+
+<UnicodeViewer client:load initialString="Être2" />
+
+- `Ê` is a single "character" for us.
+- Unicode considers it as 2 code points: "E" (`U+0045`) and "◌̂" ("Combining Circumflex Accent", `U+0302`)
+- UTF-32 encodes this as 2 units: `00000045 00000302`
+- UTF-16 encodes this as 2 units: `0045 0302`
+- UTF-8 encodes this as 3 units: `45 CC 82`
+
+"E" is a single code unit in UTF-8 so C, Go, and Rust (when they're using UTF-8[^utf-8-caveat]) manage to avoid printing invalid UTF-8 sequences, but instead they split up `E` and the combining circumflex accent, resulting in the accent being applied to the `>`!
+
+[^utf-8-caveat]: Rust enforces strings to be valid UTF-8 sequences (unless you use `unsafe` code), while Go enforces UTF-8 _source code_ (which includes string literals) but strings themselves are just byte slices with no required encoding and can contain invalid UTF-8 sequences. C has no enforced encoding at all except for certain types (on certain versions), it all depends on the compiler and compiler options (in a new modern setup it's likely all UTF-8... Unless you're working [a lot with Windows APIs](https://utf8everywhere.org/#windows)).
+
+```
+ E  |    ◌̂   | t
+ 0  | 1  | 2  | 3
+ 45 | CC | 82 | 74
+ ↓   ↙   ↙    ↙
+<45>CC 82 74...
+    ^ Our combining accent is now applied to ">"!
+```
+
+But we are still printing out valid UTF-8 sequences, so there's no `�` replacement characters here. But the UTF-16-encoded languages are also making the same mistake!
+
+```
+ E    | ◌̂   | t
+ 0    | 1    | 2
+ 0045 | 0302 | 0074
+ ↓     ↙      ↙
+<0045>0302 0074...
+      ^ Our combining accent is still applied to ">"!
+```
+
+Turns out that our problem isn't just splitting up code points, but instead splitting up _Grapheme Clusters_! That's why Swift is the only one to print every example correctly, because Swift defines [characters as _Extended Grapheme Clusters_](https://developer.apple.com/documentation/swift/character) and our indexing works using grapheme clusters. So Swift's understanding of a "character" is the same as ours and we get the results we expect.
+
+So why doesn't every language just use grapheme clusters for indexing? For two reasons:
+
+- O(1) string indexing (and "character" counting = string length) was considered important. It's why UTF-16 was chosen for some programming languages, though it's a wrong assumption to make (as we've seen!)
+- Because grapheme clusters are complicated and non-trivial to compute. The Unicode Standard defines [Grapheme Cluster Boundaries](https://unicode.org/reports/tr29/#Grapheme_Cluster_Boundaries) with many rules and requires data from the [Unicode Character Database](https://www.unicode.org/ucd/) that you have to keep up-to-date. It also ends up requiring O(n) time to index a string, which isn't immediately obvious when indexing uses the common `text[i]` syntax programmers are used to being constant-time.
+  - That's why Swift has an "odd" way to index strings, you aren't just directly accessing bytes or code units, Swift is computing grapheme clusters.
+  - Since "grapheme cluster" isn't an encoding format, we can't just store strings solely as "grapheme clusters" in memory. We still need to store them as UTF-8, UTF-16, or UTF-32 and then compute grapheme clusters on top of that.
+
+We can really see how important grapheme clusters are when we look at our family example `👨‍👨‍👧‍👧 Family`:
+
+<UnicodeViewer client:load initialString="👨‍👨‍👧‍👧 Family" />
+
+👨‍👨‍👧‍👧 is actually made up of 7 whole code points! That's 7 UTF-32 code units, 11 UTF-16 code units, and 25 UTF-8 code units.

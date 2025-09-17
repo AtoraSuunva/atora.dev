@@ -9,14 +9,17 @@ import rehypeCallouts from 'rehype-callouts';
 import rehypeFigure from 'rehype-figure';
 import rehypeSemanticBlockquotes from 'rehype-semantic-blockquotes';
 import { remarkReadingTime } from './src/plugins/remark-reading-time';
-// import { transformerStyleToClass } from '@shikijs/transformers';
+import remarkMath from 'remark-math';
+import rehypeMathjax from 'rehype-mathjax';
+import rehypeCodeGroup from 'rehype-code-group';
+import remarkFlexibleCodeTitles from 'remark-flexible-code-titles';
 
-// const toCSS = transformerStyleToClass({ classPrefix: 'shiki-' })
+import preact from '@astrojs/preact';
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://atora.dev',
-  integrations: [mdx(), sitemap()],
+  integrations: [mdx(), sitemap(), preact()],
   prefetch: {
     prefetchAll: true,
   },
@@ -24,9 +27,6 @@ export default defineConfig({
     shikiConfig: {
       theme: 'dark-plus',
       wrap: true,
-      // transformers: [
-      //   toCSS,
-      // ]
     },
     remarkRehype: {
       clobberPrefix: '',
@@ -37,8 +37,14 @@ export default defineConfig({
       [rehypeCallouts, { theme: 'github' }],
       [rehypeFigure, { className: 'figure-image' }],
       rehypeSemanticBlockquotes,
+      rehypeMathjax,
+      rehypeCodeGroup,
     ],
-    remarkPlugins: [remarkReadingTime],
+    remarkPlugins: [
+      remarkFlexibleCodeTitles,
+      remarkReadingTime,
+      remarkMath,
+    ],
   },
   image: {
     responsiveStyles: true,

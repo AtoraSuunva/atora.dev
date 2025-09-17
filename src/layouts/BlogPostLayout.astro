@@ -1,13 +1,13 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import FormattedDate from "@components/FormattedDate.astro";
+import FormattedDate from "@components/astro/FormattedDate.astro";
 import BaseLayout from "./BaseLayout.astro";
-import TagList from "@components/TagList.astro";
+import TagList from "@components/astro/TagList.astro";
 import type { MarkdownHeading } from "astro";
 import { Image } from "astro:assets";
-import TableOfContents from "@components/TableOfContents.astro";
-import ScrollIndicator from "@components/ScrollIndicator.astro";
-import type { HeadProps } from "@components/Head.astro";
+import TableOfContents from "@components/astro/TableOfContents.astro";
+import ScrollIndicator from "@components/astro/ScrollIndicator.astro";
+import type { HeadProps } from "@components/astro/Head.astro";
 
 type Props = CollectionEntry<"blog">["data"] & {
   head: HeadProps;

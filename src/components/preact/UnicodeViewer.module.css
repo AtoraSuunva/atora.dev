@@ -1,0 +1,54 @@
+.code-unit-viewer {
+  background: var(--background-darken);
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  overflow-x: auto;
+  --thumbBG: var(--secondary-color);
+  --scrollbarBG: transparent;
+  scrollbar-width: thin;
+  scrollbar-color: var(--thumbBG) var(--scrollbarBG);
+  border-spacing: 0;
+  border-collapse: separate;
+  --cuv-border: 1px solid var(--primary-color);
+}
+
+.cuv-input {
+  border-top-left-radius: var(--border-radius);
+  border-top-right-radius: var(--border-radius);
+  border: var(--cuv-border);
+}
+
+.code-unit-viewer input {
+  color: white;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  border-bottom: 2px solid var(--secondary-color);
+}
+
+.code-unit-viewer tbody td,
+.code-unit-viewer tbody th {
+  text-align: center;
+  border: var(--cuv-border);
+}
+
+.code-unit-viewer tbody td:first-child {
+  text-align: left;
+}
+
+.code-unit-viewer tr:last-child {
+  border-radius: 100%;
+}
+
+.code-unit-viewer tbody tr:first-child *:last-child {
+  border-top-right-radius: var(--border-radius);
+}
+
+.code-unit-viewer tbody tr:last-child *:first-child {
+  border-bottom-left-radius: var(--border-radius);
+}
+
+.code-unit-viewer tbody tr:last-child *:last-child {
+  border-bottom-right-radius: var(--border-radius);
+}
