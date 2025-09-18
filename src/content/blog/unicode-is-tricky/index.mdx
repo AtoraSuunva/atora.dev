@@ -58,7 +58,7 @@ And for most other languages you can repeat the same pattern, but Rust will refu
 
 [^rust-slice]: If you're an apt Rustacean you're probably already thinking about how this slice can (and will) panic.
 
-```rs
+```rs title="Rust"
 let text = "Hello world!";
 println!("<{}>{}", &text[0], &text[1..]);
 // error[E0277]: the type `str` cannot be indexed by `{integer}`
@@ -70,7 +70,7 @@ println!("<{}>{}", &text[0..1], &text[1..]);
 
 And Swift will refuse to even let us index with integers at all, forcing us to use their `String.Index` struct:
 
-```swift
+```swift title="Swift"
 let index = text.index(text.startIndex, offsetBy: 1)
 print("<\(text.first ?? "?")>\(text[index...])")
 ```
@@ -88,7 +88,7 @@ Go         | `<H>ello world!` | `<Ã>�tre1` | `<E>̂tre2` | `<ð>���‍�
 Rust       | `<H>ello world!` |  Panics    | `<E>̂tre2` | Panics, see below |
 Swift      | `<H>ello world!` |  `<Ê>tre1` | `<Ê>tre2`  | `<👨‍👨‍👧‍👧> Family`     |
 
-```rs
+```rs title="Rust"
 println!("<{}>{}", &text[0..1], &text[1..]);
 // thread 'main' panicked at src/main.rs:3:29:
 // byte index 1 is not a char boundary; it is inside 'Ê' (bytes 0..2) of `Être1`
@@ -205,7 +205,7 @@ C, Go, and Rust were the only ones to fail this example. How are they handling s
 
 C doesn't have a dedicated string type, instead it uses a pointer to a `char` and it continues to read bytes until it hits a null character (the byte `\0`). How exactly our compiler interprets string literals and converts them into bytes depends on the compiler, the encoding of the source file, and config flags passed to the compiler. In my setup gcc interprets the source files as UTF-8 and thus uses UTF-8 encoding for string literals. Since our `text` variable is just a pointer to a `char`, our string indexing is simply a byte offset. So our code effectively does:
 
-```c
+```c title="C"
 char *text = "Être1";
 // The string is UTF-8 encoded and stored as bytes by the compiler:
 // Ê     t  r  e  1  NUL
@@ -264,7 +264,7 @@ Splitting them up results in invalid UTF-8 sequences that get replaced by `�`.
 >
 > C *can* print out "Être1" correctly (with the right compiler options) using `wchar_t`, `char16_t` (with required conversion), or `char32_t` types:
 >
-> ```c
+> ```c title="C"
 > #include <stdio.h>
 > #include <wchar.h>
 > #include <uchar.h>

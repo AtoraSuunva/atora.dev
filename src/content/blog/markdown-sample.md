@@ -113,7 +113,7 @@ Donec porttitor arcu at lorem consectetur, nec eleifend arcu facilisis. Integer 
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis efficitur magna odio, non feugiat leo finibus sed. Nullam pellentesque aliquet scelerisque. Fusce at ullamcorper turpis. Quisque lacinia urna augue, vel auctor ligula semper eget. Etiam maximus augue eget ultricies rutrum. Fusce pulvinar quis massa in sodales. Quisque semper aliquam nulla cursus elementum.
 
-```html
+```html {2} del={3} ins={4}
 <!doctype html>
 <html lang="en">
   <head>
@@ -128,7 +128,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis efficitur magna od
 
 Maecenas vulputate quis diam sit amet commodo. Nulla facilisi. Aenean facilisis vehicula nibh, ac aliquet mi aliquam at. Nullam finibus congue risus, id venenatis mauris iaculis sed. Aenean aliquam mi nisi, nec porta metus molestie nec. Mauris at tincidunt urna, eget luctus odio. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae;
 
-```ts
+```ts title="helpers.ts"
 /**
  * Converts a string from camelCase to snake_case
  * @param str The string to make snake case
@@ -144,6 +144,14 @@ export function toSnakeCase(str: string): string {
 ```
 
 Cras pulvinar, urna a commodo tristique, enim ipsum pharetra massa, in facilisis libero purus accumsan dolor. Donec porttitor arcu at lorem consectetur, nec eleifend arcu facilisis. Integer consequat, ante sit amet dictum convallis, tellus velit consequat urna, et aliquet dolor erat quis urna.
+
+```bash
+echo "This terminal frame has no title"
+```
+
+```powershell title="PowerShell terminal example"
+Write-Output "This one has a title!"
+```
 
 ## List Types
 
@@ -168,6 +176,44 @@ Cras pulvinar, urna a commodo tristique, enim ipsum pharetra massa, in facilisis
 - Dairy
   - Milk
   - Cheese
+
+## Code Group
+
+::: code-group labels=[JavaScript, Python, Java, C#, C, Go]
+
+```js
+const text = "Hello world!"
+console.log(`<${text[0]}>${text.substring(1)}`)
+```
+
+```py
+text = "Hello world!"
+print(f"<{text[0]}>{text[1:]}")
+```
+
+```java
+String text = "Hello world!";
+System.out.println(String.format("<%s>%s", text.charAt(0), text.substring(1)));
+```
+
+```cs
+string text = "Hello world!";
+Console.WriteLine($"<{text[0]}>{text[1..]}");
+```
+
+```c
+// C doesn't have a string type built-in, instead we use pointers to some bytes in memory
+// There are some types other than `char` that we can use that I'll discuss later
+char *text = "Hello world!";
+printf("<%c>%s", text[0], &text[1]);
+```
+
+```go
+var text = "Hello world!"
+fmt.Printf("<%c>%s", text[0], text[1:])
+```
+
+:::
 
 ## Other Elements — abbr, sub, sup, kbd, mark
 

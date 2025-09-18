@@ -11,13 +11,38 @@ import remarkMath from 'remark-math';
 import rehypeMathjax from 'rehype-mathjax';
 import rehypeCodeGroup from 'rehype-code-group';
 import remarkFlexibleCodeTitles from 'remark-flexible-code-titles';
-
+import astroExpressiveCode from 'astro-expressive-code';
+import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 import preact from '@astrojs/preact';
+
+const expressiveCode = astroExpressiveCode({
+  styleOverrides: {
+    codeFontFamily: 'var(--font-source-code-pro)',
+    codeFontSize: '1em',
+    codeBackground: 'var(--code-background)',
+    frames: {
+      editorTabBarBackground: 'var(--background-darken)',
+      editorActiveTabBackground: 'var(--code-background)',
+      editorActiveTabIndicatorTopColor: 'var(--secondary-color)',
+      editorActiveTabIndicatorHeight: '2px',
+      editorActiveTabIndicatorBottomColor: 'transparent',
+      terminalBackground: 'var(--code-background)',
+      editorBackground: 'var(--code-background)',
+      terminalTitlebarBackground: 'var(--background-darken)',
+    }
+  },
+  defaultProps: {
+    wrap: true,
+  },
+  plugins: [
+    pluginLineNumbers(),
+  ],
+})
 
 // https://astro.build/config
 export default defineConfig({
   site: 'https://atora.dev',
-  integrations: [mdx(), sitemap(), preact()],
+  integrations: [expressiveCode, mdx(), sitemap(), preact()],
   prefetch: {
     prefetchAll: true,
   },
