@@ -8,6 +8,7 @@ export const getStaticPaths = (async ({ paginate }) => {
   const posts = await getCollection("blog").then((c) =>
     c.filter(isPublishedPost).sort(sortByPubDate),
   );
+
   return paginate(posts, { pageSize: 10 });
 }) satisfies GetStaticPaths;
 

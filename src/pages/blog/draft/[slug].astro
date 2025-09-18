@@ -2,21 +2,25 @@
 import { type CollectionEntry, getCollection } from "astro:content";
 import BlogPostLayout from "@layouts/BlogPostLayout.astro";
 import { render } from "astro:content";
-import { isPublishedPost } from "@utils/collections";
+import * as draftWarning from "./_draftWarning.md";
 
+// TODO: see if this can be deduped (../[...slug].astro)
 export async function getStaticPaths() {
-  const posts = await getCollection("blog").then((c) =>
-    c.filter(isPublishedPost),
-  );
+  const posts = await getCollection("blog");
 
   return posts.map((post) => ({
     params: { slug: post.id },
     props: post,
   }));
 }
-type Props = CollectionEntry<"blog">;
 
+type Props = CollectionEntry<"blog">;
 const post = Astro.props;
+
+if (!post.data.draft) {
+  return Astro.redirect(`/blog/post/${post.id}`, 301);
+}
+
 const { Content, headings, remarkPluginFrontmatter } = await render(post);
 const { minutesRead, words } = remarkPluginFrontmatter;
 ---
@@ -28,5 +32,6 @@ const { minutesRead, words } = remarkPluginFrontmatter;
   minutesRead={minutesRead}
   words={words}
 >
+  <draftWarning.Content />
   <Content />
 </BlogPostLayout>

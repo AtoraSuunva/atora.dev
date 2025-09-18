@@ -1,0 +1,40 @@
+---
+import { type CollectionEntry, getCollection } from "astro:content";
+import BlogPostLayout from "@layouts/BlogPostLayout.astro";
+import { render } from "astro:content";
+import { isPublishedPost } from "@utils/collections";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog").then((c) =>
+    c.filter(isPublishedPost),
+  );
+
+  console.log(
+    "post",
+    posts.map((post) => ({
+      params: { slug: post.id },
+      props: post,
+    })),
+  );
+
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: post,
+  }));
+}
+type Props = CollectionEntry<"blog">;
+
+const post = Astro.props;
+const { Content, headings, remarkPluginFrontmatter } = await render(post);
+const { minutesRead, words } = remarkPluginFrontmatter;
+---
+
+<BlogPostLayout
+  {...post.data}
+  head={{ title: post.data.title, description: post.data.description }}
+  headings={headings}
+  minutesRead={minutesRead}
+  words={words}
+>
+  <Content />
+</BlogPostLayout>

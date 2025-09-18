@@ -1,8 +1,11 @@
 ---
 import { getCollection } from "astro:content";
 import PageLayout from "@layouts/PageLayout.astro";
+import { isPublishedPost } from "@utils/collections";
 
-const posts = await getCollection("blog");
+const posts = await getCollection("blog").then((c) =>
+  c.filter((p) => isPublishedPost(p)),
+);
 const uniqueTags = [...new Set(posts.flatMap((p) => p.data.tags ?? []))];
 
 const postsByTag = uniqueTags
