@@ -16,6 +16,7 @@ import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 import preact from '@astrojs/preact';
 
 const expressiveCode = astroExpressiveCode({
+  themes: ['dark-plus', 'light-plus'],
   styleOverrides: {
     codeFontFamily: 'var(--font-source-code-pro)',
     codeFontSize: '1em',
@@ -47,10 +48,6 @@ export default defineConfig({
     prefetchAll: true,
   },
   markdown: {
-    shikiConfig: {
-      theme: 'dark-plus',
-      wrap: true,
-    },
     remarkRehype: {
       clobberPrefix: '',
     },
