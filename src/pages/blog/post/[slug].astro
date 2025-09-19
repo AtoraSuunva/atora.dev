@@ -6,15 +6,7 @@ import { isPublishedPost } from "@utils/collections";
 
 export async function getStaticPaths() {
   const posts = await getCollection("blog").then((c) =>
-    c.filter(isPublishedPost),
-  );
-
-  console.log(
-    "post",
-    posts.map((post) => ({
-      params: { slug: post.id },
-      props: post,
-    })),
+    c.filter(isPublishedPost)
   );
 
   return posts.map((post) => ({

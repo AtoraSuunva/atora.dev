@@ -10,7 +10,6 @@ import { remarkReadingTime } from './src/plugins/remark-reading-time';
 import remarkMath from 'remark-math';
 import rehypeMathjax from 'rehype-mathjax';
 import rehypeCodeGroup from 'rehype-code-group';
-import remarkFlexibleCodeTitles from 'remark-flexible-code-titles';
 import astroExpressiveCode from 'astro-expressive-code';
 import { pluginLineNumbers } from '@expressive-code/plugin-line-numbers';
 import preact from '@astrojs/preact';
@@ -24,8 +23,8 @@ const expressiveCode = astroExpressiveCode({
     frames: {
       editorTabBarBackground: 'var(--background-darken)',
       editorActiveTabBackground: 'var(--code-background)',
-      editorActiveTabIndicatorTopColor: 'var(--secondary-color)',
-      editorActiveTabIndicatorHeight: '2px',
+      editorActiveTabIndicatorTopColor: 'transparent',
+      editorActiveTabIndicatorHeight: '0',
       editorActiveTabIndicatorBottomColor: 'transparent',
       terminalBackground: 'var(--code-background)',
       editorBackground: 'var(--code-background)',
@@ -60,7 +59,6 @@ export default defineConfig({
       rehypeCodeGroup,
     ],
     remarkPlugins: [
-      remarkFlexibleCodeTitles,
       remarkReadingTime,
       remarkMath,
     ],
